@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>꼬마 탐험 도감</title>
+<meta name="description" content="어린이를 위한 포켓몬 찾아보기 도감. 그림을 눌러 보고, 설명을 듣고, 그림자 퀴즈도 풀어요.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='13' r='9' fill='%23ffd34d' stroke='%23233049' stroke-width='3'/%3E%3Cpath d='M20 20l8 8' stroke='%23233049' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: an explorer's sticker album — sky-blue page, a big friendly search bar, tap-able sticker cards; details open as a full card sheet */
+:root {
+  --sky: #e6f3fb;
+  --sky-deep: #cfe7f6;
+  --paper: #ffffff;
+  --ink: #233049;
+  --ink-soft: #5b6a82;
+  --sun: #ffd34d;
+  --coral: #ff6b57;
+  --leaf: #3aa76d;
+  --display: "Jua", "Gowun Dodum", system-ui, sans-serif;
+  --body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--sky);
+  background-image: radial-gradient(var(--sky-deep) 2px, transparent 2.5px);
+  background-size: 26px 26px;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 18px;
+  line-height: 1.6;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 4px solid var(--coral); outline-offset: 3px; }
+
+/* ---------- header ---------- */
+header { padding-block: 16px 8px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.logo { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 2rem; line-height: 1; }
+.logo svg { width: 44px; height: 44px; flex: none; }
+.logo small { display: block; font-family: var(--body); font-size: .85rem; color: var(--ink-soft); margin-top: 4px; }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.tab {
+  font-family: var(--display); font-size: 1.15rem; padding: 10px 18px; min-height: 52px;
+  border: 3px solid var(--ink); border-radius: 999px; background: var(--paper);
+  box-shadow: 0 4px 0 var(--ink); transition: transform .1s, box-shadow .1s;
+}
+.tab:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.tab[aria-selected="true"] { background: var(--sun); }
+.tab .count { display: inline-block; min-width: 1.6em; margin-left: 4px; padding: 0 6px; border-radius: 999px; background: var(--coral); color: var(--paper); font-size: .95rem; }
+
+/* ---------- search & filters ---------- */
+.search { position: relative; margin-top: 14px; }
+.search input {
+  width: 100%; font: 1.3rem var(--display); color: var(--ink); padding: 16px 64px 16px 60px;
+  border: 4px solid var(--ink); border-radius: 22px; background: var(--paper); box-shadow: 0 6px 0 var(--ink);
+}
+.search input::placeholder { color: #8a97ab; }
+.search svg { position: absolute; left: 18px; top: 50%; width: 30px; height: 30px; transform: translateY(-50%); pointer-events: none; }
+.search .clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--sky-deep); font-size: 1.3rem; line-height: 1; }
+.filters { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+.row-label { flex: none; white-space: nowrap; font-family: var(--display); font-size: 1rem; color: var(--ink-soft); margin-right: 4px; }
+.chips { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 8px; scrollbar-width: thin; align-items: center; }
+.chip {
+  flex: none; font-family: var(--display); font-size: 1.05rem; min-height: 44px; padding: 6px 14px;
+  border: 3px solid var(--ink); border-radius: 14px; background: var(--paper);
+}
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.chip.type { border-color: transparent; color: #fff; background: var(--t); text-shadow: 0 1px 1px rgba(0,0,0,.25); opacity: .9; }
+.chip.type[aria-pressed="true"] { border-color: var(--ink); opacity: 1; box-shadow: 0 0 0 3px var(--sun); background: var(--t); }
+.stars { color: #f0a500; letter-spacing: 1px; font-size: .95rem; line-height: 1.2; }
+.stars.big { font-size: 1.6rem; letter-spacing: 2px; }
+.tier-head { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 18px; margin-top: 10px; background: var(--paper); border: 3px solid var(--ink); border-radius: 18px; font-family: var(--display); font-size: 1.35rem; }
+.tier-head:first-child { margin-top: 0; }
+.tier-head .cnt { margin-left: auto; color: var(--ink-soft); font-size: 1.05rem; }
+.power { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-family: var(--display); font-size: 1.45rem; }
+.rank { font-size: 1.15rem; margin: 4px 0 12px; }
+.rank b { color: var(--coral); }
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 6px 0 14px; }
+.found { font-family: var(--display); font-size: 1.2rem; }
+.found b { color: var(--coral); }
+.big-btn {
+  font-family: var(--display); font-size: 1.2rem; padding: 10px 20px; min-height: 52px;
+  border: 3px solid var(--ink); border-radius: 18px; background: var(--sun); box-shadow: 0 5px 0 var(--ink);
+  transition: transform .1s, box-shadow .1s;
+}
+.big-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+.big-btn.coral { background: var(--coral); color: #fff; }
+.big-btn.plain { background: var(--paper); }
+
+/* ---------- sticker grid ---------- */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; padding-bottom: 32px; }
+.card {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 10px 8px 12px; border: 3px solid var(--ink); border-radius: 22px; background: var(--paper);
+  box-shadow: 0 5px 0 var(--ink); text-align: center; transition: transform .12s;
+}
+.card:hover { transform: translateY(-3px) rotate(-1deg); }
+.card:active { transform: translateY(2px); }
+.card .pic { width: 100%; aspect-ratio: 1; max-width: 140px; border-radius: 50%; background: radial-gradient(circle at 50% 60%, var(--bg, var(--sky)) 0 62%, transparent 63%); display: grid; place-items: center; }
+.card img { width: 92%; height: 92%; object-fit: contain; }
+.card .no { font-size: .8rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.card .nm { font-family: var(--display); font-size: 1.25rem; line-height: 1.2; word-break: keep-all; }
+.card .heart { position: absolute; top: 8px; right: 10px; color: var(--coral); font-size: 1.2rem; }
+.empty { grid-column: 1 / -1; text-align: center; padding: 40px 16px; background: var(--paper); border: 3px dashed var(--ink-soft); border-radius: 22px; }
+.empty b { display: block; font-family: var(--display); font-size: 1.5rem; margin-bottom: 6px; }
+.loading { grid-column: 1 / -1; text-align: center; padding: 40px; font-family: var(--display); font-size: 1.4rem; }
+.spin { display: inline-block; width: 36px; height: 36px; border: 5px solid var(--sky-deep); border-top-color: var(--coral); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: middle; margin-right: 10px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- detail sheet ---------- */
+.sheet-bg { position: fixed; inset: 0; z-index: 20; background: rgba(35, 48, 73, .55); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: max(16px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px)); }
+.sheet { position: relative; width: 100%; max-width: 760px; background: var(--paper); border: 4px solid var(--ink); border-radius: 28px; box-shadow: 0 8px 0 var(--ink); overflow: hidden; }
+.sheet-top { position: relative; background: var(--bg, var(--sky)); padding: 18px 18px 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: end; }
+.sheet-top .art { width: 100%; max-width: 300px; aspect-ratio: 1; justify-self: center; filter: drop-shadow(0 8px 0 rgba(0,0,0,.12)); }
+.sheet-top .art img { width: 100%; height: 100%; object-fit: contain; }
+.sheet-top .who { padding-bottom: 22px; min-width: 0; }
+.who .no { font-family: var(--display); font-size: 1.1rem; background: rgba(255,255,255,.8); padding: 2px 12px; border-radius: 999px; display: inline-block; }
+.who h2 { font-family: var(--display); font-weight: 400; font-size: clamp(2.2rem, 7vw, 3.4rem); line-height: 1.05; margin: 8px 0 4px; word-break: keep-all; text-wrap: balance; }
+.who .genus { font-size: 1.05rem; margin: 0 0 10px; }
+.types { display: flex; gap: 8px; flex-wrap: wrap; }
+.type-pill { font-family: var(--display); font-size: 1.1rem; color: #fff; background: var(--t); padding: 4px 16px; border-radius: 999px; border: 3px solid rgba(255,255,255,.85); text-shadow: 0 1px 1px rgba(0,0,0,.25); }
+.x { position: absolute; top: 12px; right: 12px; z-index: 2; width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--ink); background: var(--paper); font-size: 1.6rem; line-height: 1; box-shadow: 0 3px 0 var(--ink); }
+.sheet-body { padding: 20px 22px 26px; display: flex; flex-direction: column; gap: 22px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.say { font-size: 1.25rem; line-height: 1.7; margin: 0; padding: 14px 18px; background: var(--sky); border-radius: 18px; word-break: keep-all; }
+.box h3 { font-family: var(--display); font-weight: 400; font-size: 1.45rem; margin: 0 0 10px; }
+.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.cmp { border: 3px solid var(--ink); border-radius: 20px; padding: 14px; }
+.cmp .lbl { font-family: var(--display); font-size: 1.05rem; color: var(--ink-soft); }
+.cmp .val { font-family: var(--display); font-size: 1.7rem; line-height: 1.2; }
+.cmp .note { font-size: 1rem; margin-top: 4px; word-break: keep-all; }
+.stage { display: flex; align-items: flex-end; justify-content: center; gap: 22px; height: 170px; margin-top: 10px; border-bottom: 3px solid var(--ink); }
+.stage figure { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.stage figcaption { font-size: .85rem; color: var(--ink-soft); }
+.kid { display: flex; flex-direction: column; align-items: center; }
+.kid .head { border-radius: 50%; background: var(--coral); }
+.kid .bod { border-radius: 40% 40% 12% 12%; background: var(--coral); }
+.stage img { object-fit: contain; object-position: bottom; }
+.stats { display: flex; flex-direction: column; gap: 10px; }
+.stat { display: grid; grid-template-columns: 5.2em minmax(0, 1fr) 2.6em; gap: 10px; align-items: center; }
+.stat .nm { font-family: var(--display); font-size: 1.1rem; }
+.bar { height: 22px; background: var(--sky); border-radius: 999px; overflow: hidden; border: 2px solid var(--ink); }
+.bar i { display: block; height: 100%; background: var(--c); border-radius: 999px; transition: width .5s ease-out; }
+.stat .v { font-family: var(--display); font-size: 1.1rem; text-align: right; font-variant-numeric: tabular-nums; }
+.stat-hint { font-size: .95rem; color: var(--ink-soft); margin: 6px 0 0; }
+.evo { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+.evo .col { display: flex; flex-direction: column; gap: 8px; }
+.evo button { display: flex; flex-direction: column; align-items: center; width: 118px; padding: 6px; border: 3px solid var(--ink); border-radius: 18px; background: var(--paper); }
+.evo button[aria-current="true"] { background: var(--sun); }
+.evo img { width: 84px; height: 84px; object-fit: contain; }
+.evo span { font-family: var(--display); font-size: 1rem; word-break: keep-all; }
+.evo .arrow { font-family: var(--display); font-size: 2rem; color: var(--ink-soft); }
+.navrow { display: flex; justify-content: space-between; gap: 10px; }
+.oops { text-align: center; padding: 30px 20px; }
+.oops b { display: block; font-family: var(--display); font-size: 1.6rem; margin-bottom: 8px; }
+
+/* ---------- quiz ---------- */
+.quiz { max-width: 640px; margin: 18px auto 40px; background: var(--paper); border: 4px solid var(--ink); border-radius: 28px; box-shadow: 0 8px 0 var(--ink); padding: 18px; text-align: center; }
+.quiz h2 { font-family: var(--display); font-weight: 400; font-size: 2rem; margin: 0; }
+.quiz .score { display: flex; justify-content: center; gap: 18px; font-family: var(--display); font-size: 1.15rem; margin: 6px 0 10px; flex-wrap: wrap; }
+.quiz .score b { color: var(--coral); }
+.shadow { width: min(280px, 70vw); aspect-ratio: 1; margin: 0 auto; border-radius: 50%; background: radial-gradient(circle, #fff 0 45%, var(--sky) 46% 100%); display: grid; place-items: center; }
+.shadow img { width: 88%; height: 88%; object-fit: contain; filter: brightness(0); transition: filter .5s; }
+.shadow.show img { filter: none; }
+.answers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.answers button { font-family: var(--display); font-size: 1.35rem; min-height: 64px; padding: 8px; border: 3px solid var(--ink); border-radius: 18px; background: var(--sky); box-shadow: 0 4px 0 var(--ink); word-break: keep-all; }
+.answers button.right { background: var(--leaf); color: #fff; }
+.answers button.wrong { background: var(--coral); color: #fff; }
+.answers button:disabled { cursor: default; }
+.verdict { min-height: 2.4em; font-family: var(--display); font-size: 1.6rem; margin: 12px 0 4px; }
+.quiz .chips { justify-content: center; flex-wrap: wrap; }
+.levels { display: flex; align-items: stretch; justify-content: center; gap: 8px; max-width: 640px; margin: 18px auto 0; flex-wrap: wrap; }
+.lv-label { align-self: center; font-family: var(--display); font-size: 1.1rem; color: var(--ink-soft); margin-right: 4px; }
+.levels button { display: flex; flex-direction: column; align-items: center; min-width: 120px; padding: 6px 14px; border: 3px solid var(--ink); border-radius: 16px; background: var(--paper); }
+.levels button b { font-family: var(--display); font-weight: 400; font-size: 1.2rem; line-height: 1.2; }
+.levels button span { font-size: .8rem; color: var(--ink-soft); }
+.levels button[aria-checked="true"] { background: var(--ink); color: var(--paper); }
+.levels button[aria-checked="true"] span { color: var(--sky-deep); }
+.answers button:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.qtabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 640px; margin: 18px auto 0; }
+.qtabs button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 6px; border: 3px solid var(--ink); border-radius: 20px; background: var(--paper); box-shadow: 0 4px 0 var(--ink); }
+.qtabs button b { font-family: var(--display); font-weight: 400; font-size: 1.25rem; line-height: 1.2; }
+.qtabs button span { font-size: .85rem; color: var(--ink-soft); }
+.qtabs button[aria-selected="true"] { background: var(--sun); }
+.cho { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 16px 0 12px; }
+.cho span { min-width: 56px; height: 64px; padding: 0 6px; display: grid; place-items: center; font-family: var(--display); font-size: 2.2rem; border: 3px solid var(--ink); border-radius: 14px; background: var(--sky); }
+.cho span.open { background: var(--sun); }
+.cho-form { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
+.cho-form input { flex: 1; min-width: 0; font: 1.4rem var(--display); color: var(--ink); padding: 10px 16px; border: 3px solid var(--ink); border-radius: 16px; background: var(--paper); text-align: center; }
+.qbtns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+.pz-help { margin: 4px 0 12px; color: var(--ink-soft); }
+.pz-wrap { display: flex; gap: 14px; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
+.puzzle { --n: 3; width: min(320px, 78vw); aspect-ratio: 1; display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 3px; padding: 3px; background: var(--ink); border-radius: 14px; transition: gap .4s, padding .4s; }
+.puzzle.done { gap: 0; padding: 0; }
+.tile { border: 0; padding: 0; border-radius: 6px; background-color: var(--sky); background-repeat: no-repeat; transition: transform .12s, box-shadow .12s; }
+.puzzle.done .tile { border-radius: 0; }
+.tile.sel { transform: scale(.9); box-shadow: 0 0 0 4px var(--coral); z-index: 1; }
+.pz-peek { margin: 0; width: 96px; text-align: center; }
+.pz-peek img { width: 96px; height: 96px; object-fit: contain; background: var(--sky); border-radius: 14px; border: 2px solid var(--ink); }
+.pz-peek figcaption { font-size: .85rem; color: var(--ink-soft); }
+
+/* ---------- footer ---------- */
+footer { padding-block: 26px 36px; font-size: .9rem; color: var(--ink-soft); border-top: 3px dashed var(--sky-deep); margin-top: 10px; }
+footer details { margin-top: 10px; }
+footer summary { cursor: pointer; font-weight: 700; }
+#apiLog { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .8rem; background: var(--paper); border: 2px solid var(--sky-deep); border-radius: 12px; padding: 10px; max-height: 220px; overflow: auto; white-space: pre-wrap; word-break: break-all; margin-top: 8px; }
+
+@media (max-width: 600px) {
+  .qtabs button b { font-size: 1.05rem; }
+  .lv-label { display: none; }
+  .levels button { min-width: 0; flex: 1; padding: 6px 4px; }
+  .qtabs button span { display: none; }
+  .cho span { min-width: 46px; height: 56px; font-size: 1.8rem; }
+  body { font-size: 17px; }
+  .logo { font-size: 1.6rem; }
+  .logo svg { width: 36px; height: 36px; }
+  .tab { font-size: 1rem; padding: 8px 14px; min-height: 48px; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .sheet-top { grid-template-columns: 1fr; padding-top: 56px; }
+  .sheet-top .art { max-width: 230px; }
+  .who { text-align: center; }
+  .who .types { justify-content: center; }
+  .answers button { font-size: 1.15rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card, .tab, .big-btn, .bar i, .shadow img { transition: none; }
+  .card:hover { transform: none; }
+  .spin { animation-duration: 2s; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="18" cy="18" r="13" fill="#ffd34d" stroke="#233049" stroke-width="4"/><circle cx="13" cy="13" r="4" fill="#fff"/><path d="M28 28l11 11" stroke="#233049" stroke-width="6" stroke-linecap="round"/></svg>
+      <div>꼬마 탐험 도감<small>포켓몬을 찾아보고, 듣고, 맞혀 봐요</small></div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="메뉴">
+      <button class="tab" role="tab" id="tab-dex" aria-selected="true" data-view="dex">도감</button>
+      <button class="tab" role="tab" id="tab-quiz" aria-selected="false" data-view="quiz">퀴즈 놀이</button>
+      <button class="tab" role="tab" id="tab-friends" aria-selected="false" data-view="friends">내 친구들<span class="count" id="friendCount">0</span></button>
+    </nav>
+  </header>
+
+  <!-- ===== 도감 ===== -->
+  <main id="view-dex">
+    <div class="search">
+      <svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#233049" stroke-width="3.5"/><path d="M19 19l8 8" stroke="#233049" stroke-width="4" stroke-linecap="round"/></svg>
+      <input id="q" type="search" autocomplete="off" placeholder="이름이나 번호를 써 보세요" aria-label="포켓몬 찾기">
+      <button class="clear" id="clearQ" type="button" aria-label="지우기" hidden>✕</button>
+    </div>
+
+    <div class="filters">
+      <div class="chips" id="sortChips" aria-label="보는 순서"><span class="row-label">순서</span></div>
+      <div class="chips" id="typeChips" aria-label="타입 고르기"><span class="row-label">타입</span></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="found" id="found">포켓몬을 불러오고 있어요</div>
+      <button class="big-btn coral" id="randomBtn" type="button">아무나 보여 줘!</button>
+    </div>
+
+    <div class="grid" id="grid">
+      <div class="loading"><span class="spin"></span>포켓몬 친구들을 데려오는 중…</div>
+    </div>
+  </main>
+
+  <!-- ===== 퀴즈 놀이: 그림자 / 초성 / 퍼즐 ===== -->
+  <main id="view-quiz" hidden>
+    <div class="levels" id="quizLevel" role="radiogroup" aria-label="난이도">
+      <span class="lv-label">난이도</span>
+      <button type="button" role="radio" data-lv="easy" aria-checked="false"><b>쉬움</b><span>1세대 친구들</span></button>
+      <button type="button" role="radio" data-lv="normal" aria-checked="false"><b>보통</b><span>1~4세대 친구들</span></button>
+      <button type="button" role="radio" data-lv="hard" aria-checked="false"><b>어려움</b><span>모든 세대 친구들</span></button>
+    </div>
+    <div class="qtabs" id="quizTabs" role="tablist" aria-label="퀴즈 고르기">
+      <button type="button" role="tab" data-q="shadow" aria-selected="true"><b>그림자 퀴즈</b><span>까만 그림자는 누구?</span></button>
+      <button type="button" role="tab" data-q="chosung" aria-selected="false"><b>초성 퀴즈</b><span>ㅍㅋㅊ 는 누구?</span></button>
+      <button type="button" role="tab" data-q="puzzle" aria-selected="false"><b>퍼즐 맞추기</b><span>조각을 바꿔 맞춰요</span></button>
+    </div>
+
+    <!-- 그림자 퀴즈 -->
+    <div class="quiz" id="q-shadow">
+      <h2>이 친구는 누구일까요?</h2>
+      <div class="score"><span>연속 정답 <b id="streak">0</b></span><span>최고 기록 <b id="bestStreak">0</b></span></div>
+      <div class="shadow" id="shadow"><img id="shadowImg" alt="그림자 모양의 포켓몬"></div>
+      <div class="verdict" id="verdict" aria-live="polite"></div>
+      <div class="answers" id="answers"></div>
+      <div style="margin-top:16px"><button class="big-btn" id="nextQ" type="button" hidden>다음 문제 →</button></div>
+    </div>
+
+    <!-- 초성 퀴즈 -->
+    <div class="quiz" id="q-chosung" hidden>
+      <h2>초성을 보고 이름을 맞혀요</h2>
+      <div class="score"><span>연속 정답 <b id="choStreak">0</b></span><span>최고 기록 <b id="choBest">0</b></span></div>
+      <div class="shadow show" id="choPic"><img id="choImg" alt="맞혀야 할 포켓몬 사진"></div>
+      <div class="cho" id="choHint" aria-label="초성 힌트"></div>
+      <form class="cho-form" id="choForm" autocomplete="off">
+        <input id="choInput" type="text" placeholder="이름을 써 보세요" aria-label="정답 쓰기" enterkeyhint="done">
+        <button class="big-btn" type="submit">확인</button>
+      </form>
+      <div class="verdict" id="choVerdict" aria-live="polite"></div>
+      <div class="qbtns">
+        <button class="big-btn plain" id="choMore" type="button">글자 하나 보여 줘</button>
+        <button class="big-btn plain" id="choGive" type="button">정답 볼래요</button>
+        <button class="big-btn" id="choNext" type="button" hidden>다음 문제 →</button>
+      </div>
+    </div>
+
+    <!-- 퍼즐 맞추기 -->
+    <div class="quiz" id="q-puzzle" hidden>
+      <h2>퍼즐을 맞춰요</h2>
+      <div class="score"><span>움직인 횟수 <b id="pzMoves">0</b></span><span>완성한 퍼즐 <b id="pzDone">0</b></span></div>
+      <p class="pz-help" id="pzHelp">바꾸고 싶은 조각 두 개를 차례로 눌러 보세요.</p>
+      <div class="pz-wrap">
+        <div class="puzzle" id="puzzle" aria-label="퍼즐 판"></div>
+        <figure class="pz-peek" id="pzPeekBox"><img id="pzPeek" alt="완성된 그림"><figcaption>완성 그림</figcaption></figure>
+      </div>
+      <div class="verdict" id="pzVerdict" aria-live="polite"></div>
+      <div class="qbtns"><button class="big-btn plain" id="pzShuffle" type="button">다시 섞기</button><button class="big-btn" id="pzNext" type="button">다른 친구 퍼즐 →</button></div>
+    </div>
+  </main>
+
+  <!-- ===== 내 친구들 ===== -->
+  <main id="view-friends" hidden>
+    <div class="toolbar" style="margin-top:16px"><div class="found" id="friendsTitle">내가 좋아하는 친구들</div></div>
+    <div class="grid" id="friendsGrid"></div>
+  </main>
+
+  <footer>
+    <div>이 사이트는 팬이 만든 비공식 도감이에요. 정보와 그림은 <b>PokeAPI</b>에서 받아 와요. 포켓몬 이름과 그림의 권리는 Nintendo, Creatures, GAME FREAK에 있어요.</div>
+    <div>좋아요 표시와 퀴즈 기록은 이 기기에만 저장돼요. 다른 곳으로 보내지 않아요.</div>
+    <details>
+      <summary>만든 사람용: 이 페이지가 보낸 API 요청 보기</summary>
+      <div id="apiLog">아직 보낸 요청이 없어요.</div>
+    </details>
+  </footer>
+</div>
+
+<!-- ===== 상세 카드 ===== -->
+<div class="sheet-bg" id="sheetBg" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="dName" id="sheet"></div>
+</div>
+
+<script>
+(() => {
+  /* =====================================================================
+     기본 설정
+     ===================================================================== */
+  const API = 'https://pokeapi.co/api/v2/';                       // ★ PokeAPI 주소
+  const CSV_BASE = 'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/';   // PokeAPI 데이터 파일
+  const NAMES_CSV = CSV_BASE + 'pokemon_species_names.csv';   // 한글 이름표
+  const STATS_CSV = CSV_BASE + 'pokemon_stats.csv';           // 모든 포켓몬 능력치
+  const TYPES_CSV = CSV_BASE + 'pokemon_types.csv';           // 모든 포켓몬 타입
+  const ART = id => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  const SPRITE = id => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+  const CACHE_V = 'kdex1:';
+  const KID = { cm: 125, kg: 25 };                                // 8살 어린이 평균 정도
+
+  const TYPES = {
+    normal:   ['노말', '#9a9a7c'], fire:     ['불꽃', '#ee7f30'], water:    ['물', '#5a8fe6'],
+    grass:    ['풀', '#5fb84a'],   electric: ['전기', '#e8b81c'], ice:      ['얼음', '#5cc4c4'],
+    fighting: ['격투', '#c0392b'], poison:   ['독', '#9b4fa5'],   ground:   ['땅', '#c99a45'],
+    flying:   ['비행', '#8c88e6'], psychic:  ['에스퍼', '#ef5f8a'], bug:    ['벌레', '#93a51f'],
+    rock:     ['바위', '#ab9842'], ghost:    ['고스트', '#6b5596'], dragon: ['드래곤', '#6a3ff0'],
+    dark:     ['악', '#5f4d43'],   steel:    ['강철', '#8f8fae'],  fairy:    ['페어리', '#e07fb4'],
+  };
+  const STATS = {
+    hp: ['체력', '#ff6b57'], attack: ['공격', '#ff9f43'], defense: ['방어', '#ffd34d'],
+    'special-attack': ['특수공격', '#5a8fe6'], 'special-defense': ['특수방어', '#3aa76d'], speed: ['스피드', '#e07fb4'],
+  };
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  const pad = n => String(n).padStart(4, '0');
+  // 받침이 있으면 '이에요', 없으면 '예요' (예: 이상해꽃이에요, 피카츄예요)
+  const ieyo = w => { const c = w.charCodeAt(w.length - 1); return (c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28) ? w + '이에요' : w + '예요'; };
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(CACHE_V + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(CACHE_V + k, JSON.stringify(v)); } catch (e) {} },
+  };
+
+  /* =====================================================================
+     ★ API 요청 부분
+     getJSON(): PokeAPI에 "이 정보 주세요"라고 요청하고 답(JSON)을 받아요.
+     한 번 받은 정보는 기억해 두고 다시 요청하지 않아요 (PokeAPI의 부탁).
+     ===================================================================== */
+  const memo = new Map();
+  const logLines = [];
+  function logApi(url, note) {
+    const t = new Date().toTimeString().slice(0, 8);
+    logLines.unshift(`${t}  ${note}  ${url}`);
+    $('apiLog').textContent = logLines.slice(0, 60).join('\n');
+  }
+  async function getJSON(url) {
+    if (memo.has(url)) { logApi(url, '저장된 것 사용'); return memo.get(url); }
+    logApi(url, '요청 보냄 →');
+    const res = await fetch(url);                                  // ← 여기서 인터넷으로 요청을 보내요
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();                                 // ← 받은 글자 묶음(JSON)을 읽어요
+    memo.set(url, data);
+    return data;
+  }
+
+  /* =====================================================================
+     1) 한글 이름표 불러오기 (처음 한 번만, 그 뒤로는 기기에 저장된 것 사용)
+     ===================================================================== */
+  let DEX = [];            // [{id, ko, en, genus}]
+  let byId = new Map();
+  function parseCSV(text) {
+    const rows = []; let row = [], cur = '', q = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (q) { if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; }
+      else if (c === '"') q = true;
+      else if (c === ',') { row.push(cur); cur = ''; }
+      else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(cur); rows.push(row); row = []; cur = ''; }
+      else cur += c;
+    }
+    if (cur || row.length) { row.push(cur); rows.push(row); }
+    return rows;
+  }
+  async function loadNames() {
+    const saved = store.get('names', null);
+    if (saved && saved.length > 100) return saved;
+    try {
+      logApi(NAMES_CSV, '이름표 요청 →');
+      const res = await fetch(NAMES_CSV);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const rows = parseCSV(await res.text());
+      const map = new Map();
+      for (const r of rows.slice(1)) {
+        const id = +r[0], lang = r[1];
+        if (!id) continue;
+        const e = map.get(id) || { id, ko: '', en: '', genus: '' };
+        if (lang === '3') { e.ko = r[2]; e.genus = r[3] || ''; }     // 3 = 한국어
+        if (lang === '9') { e.en = r[2]; }                           // 9 = 영어
+        map.set(id, e);
+      }
+      const list = [...map.values()].filter(e => e.ko || e.en).sort((a, b) => a.id - b.id)
+        .map(e => ({ ...e, ko: e.ko || e.en }));
+      store.set('names', list);
+      return list;
+    } catch (err) {
+      // 이름표를 못 받으면 PokeAPI의 영어 이름 목록으로 대신해요
+      const data = await getJSON(API + 'pokemon-species?limit=2000');
+      return data.results.map(r => { const id = +r.url.split('/').filter(Boolean).pop(); return { id, ko: r.name, en: r.name, genus: '' }; })
+        .sort((a, b) => a.id - b.id);
+    }
+  }
+
+  /* =====================================================================
+     2) 포켓몬 한 마리의 자세한 정보 (키, 몸무게, 타입, 능력치, 설명, 진화)
+     ===================================================================== */
+  async function loadDetail(id) {
+    const cached = store.get('p' + id, null);
+    if (cached) { logApi(API + 'pokemon/' + id, '기기에 저장된 것 사용'); return cached; }
+    const [p, s] = await Promise.all([
+      getJSON(API + 'pokemon/' + id),                  // 키, 몸무게, 타입, 능력치
+      getJSON(API + 'pokemon-species/' + id),          // 설명, 진화 정보 주소
+    ]);
+    const ko = (s.flavor_text_entries || []).filter(f => f.language.name === 'ko');
+    const flavor = ko.length ? ko[ko.length - 1].flavor_text.replace(/[\n\f\r­]+/g, ' ').replace(/\s+/g, ' ').trim() : '';
+    let evo = [];
+    try {
+      if (s.evolution_chain && s.evolution_chain.url) {
+        const ch = await getJSON(s.evolution_chain.url);   // 진화 단계
+        let level = [ch.chain];
+        while (level.length) {
+          evo.push(level.map(n => +n.species.url.split('/').filter(Boolean).pop()));
+          level = level.flatMap(n => n.evolves_to || []);
+        }
+      }
+    } catch (e) { evo = []; }
+    const detail = {
+      id,
+      h: p.height, w: p.weight,
+      types: p.types.sort((a, b) => a.slot - b.slot).map(t => t.type.name),
+      stats: p.stats.map(st => [st.stat.name, st.base_stat]),
+      flavor, evo,
+      genus: ((s.genera || []).find(g => g.language.name === 'ko') || {}).genus || '',
+    };
+    store.set('p' + id, detail);
+    return detail;
+  }
+
+  /* =====================================================================
+     3) 힘 정보: 모든 포켓몬의 능력치 합계와 타입 (데이터 파일 2개, 처음 한 번만)
+        능력치(체력+공격+방어+특수공격+특수방어+스피드)를 모두 더한 점수가 클수록 센 포켓몬이에요.
+     ===================================================================== */
+  const TYPE_BY_NUM = [null, 'normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel',
+                       'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy'];
+  const TIERS = [
+    { min: 600, stars: 5, name: '전설처럼 강해요' },
+    { min: 520, stars: 4, name: '아주 강해요' },
+    { min: 420, stars: 3, name: '강해요' },
+    { min: 300, stars: 2, name: '보통이에요' },
+    { min: 0,   stars: 1, name: '아직 작고 약해요' },
+  ];
+  const tierOf = bst => TIERS.find(t => bst >= t.min);
+  const starStr = n => '★'.repeat(n) + '☆'.repeat(5 - n);
+  let hasPower = false;
+
+  async function fetchCSV(url) {
+    logApi(url, '데이터 파일 요청 →');
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return parseCSV(await res.text());
+  }
+  async function loadPower() {
+    let power = store.get('power', null);
+    if (!power) {
+      const [stats, types] = await Promise.all([fetchCSV(STATS_CSV), fetchCSV(TYPES_CSV)]);
+      power = {};
+      for (const r of stats.slice(1)) {
+        const id = +r[0]; if (!byId.has(id)) continue;
+        (power[id] = power[id] || [0, []])[0] += +r[2];
+      }
+      for (const r of types.slice(1)) {
+        const id = +r[0]; if (!power[id]) continue;
+        const t = TYPE_BY_NUM[+r[1]]; if (t) power[id][1][+r[2] - 1] = t;
+      }
+      store.set('power', power);
+    }
+    for (const p of DEX) { const v = power[p.id]; if (v) { p.bst = v[0]; p.types = (v[1] || []).filter(Boolean); } }
+    hasPower = DEX.some(p => p.bst);
+  }
+
+  // 타입별 목록: 힘 정보가 있으면 바로 고르고, 없으면 PokeAPI에 물어봐요
+  async function loadType(type) {
+    if (hasPower) return new Set(DEX.filter(p => p.types && p.types.includes(type)).map(p => p.id));
+    const cached = store.get('t-' + type, null);
+    if (cached) return new Set(cached);
+    const data = await getJSON(API + 'type/' + type);
+    const ids = data.pokemon.map(x => +x.pokemon.url.split('/').filter(Boolean).pop()).filter(id => byId.has(id));
+    store.set('t-' + type, ids);
+    return new Set(ids);
+  }
+
+  /* =====================================================================
+     화면 그리기
+     ===================================================================== */
+  let friends = new Set(store.get('friends', []));
+  let sortBy = 'num';          // 'num' 번호 순서, 'power' 힘 센 순서
+  let typeSel = null, typeIds = null;
+
+  function imgTag(id, cls = '', alt = '') {
+    return `<img ${cls ? `class="${cls}"` : ''} src="${ART(id)}" alt="${esc(alt)}" loading="lazy" decoding="async" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='${SPRITE(id)}'}else{this.style.visibility='hidden'}">`;
+  }
+  function cardHTML(p) {
+    const t = p.bst ? tierOf(p.bst) : null;
+    return `<button class="card" type="button" data-id="${p.id}" aria-label="${esc(p.ko)} 보기">
+      ${friends.has(p.id) ? '<span class="heart" aria-label="내 친구">♥</span>' : ''}
+      <span class="pic">${imgTag(p.id, '', '')}</span>
+      <span class="no">No.${pad(p.id)}</span>
+      <span class="nm">${esc(p.ko)}</span>
+      ${t ? `<span class="stars" aria-label="힘 별 ${t.stars}개">${starStr(t.stars)}</span>` : ''}
+    </button>`;
+  }
+
+  function searchMatch(q) {
+    q = q.trim().toLowerCase().replace(/^no\.?\s*/, '');
+    if (!q) return null;
+    if (/^\d+$/.test(q)) { const n = +q; return DEX.filter(p => p.id === n || String(p.id).startsWith(q)).sort((a, b) => (a.id === n ? -1 : 0) - (b.id === n ? -1 : 0)); }
+    const qs = q.replace(/\s/g, '');
+    return DEX.filter(p => p.ko.replace(/\s/g, '').includes(qs) || p.en.toLowerCase().includes(q));
+  }
+
+  function renderGrid() {
+    if (!DEX.length) {   // 이름표를 아직 못 받았으면 "0마리" 대신 이유를 알려 줘요
+      $('found').textContent = '앗! 포켓몬 친구들을 데려오지 못했어요';
+      $('grid').innerHTML = `<div class="empty"><b>인터넷에 연결되지 않았어요</b>이 페이지는 인터넷으로 PokeAPI에 물어봐야 해요. GitHub Pages 주소로 열었는지 확인해 주세요.<div style="margin-top:14px"><button class="big-btn" type="button" onclick="location.reload()">다시 해 볼래요</button></div></div>`;
+      return;
+    }
+    const q = $('q').value;
+    let list = searchMatch(q);
+    let label;
+    if (list) {
+      label = `"${esc(q.trim())}" 찾은 친구 <b>${list.length}</b>마리`;
+    } else {
+      list = typeIds ? DEX.filter(p => typeIds.has(p.id)) : DEX.slice();
+      label = `${typeSel ? TYPES[typeSel][0] + ' 타입' : '모든'} 친구 <b>${list.length}</b>마리`;
+    }
+    $('found').innerHTML = label;
+    if (!list.length) {
+      $('grid').innerHTML = `<div class="empty"><b>앗, 못 찾았어요</b>이름을 조금만 써 보거나, 다른 타입을 눌러 보세요.</div>`;
+      return;
+    }
+    if ((sortBy === 'power' || sortBy === 'weak') && hasPower) {
+      // 센 순서: 별 5개 무리부터 / 약한 순서: 별 1개 무리부터
+      const dir = sortBy === 'power' ? 1 : -1;
+      list = list.slice().sort((a, b) => dir * ((b.bst || 0) - (a.bst || 0)) || a.id - b.id);
+      const tiers = sortBy === 'power' ? TIERS : TIERS.slice().reverse();
+      $('grid').innerHTML = tiers.map(t => {
+        const g = list.filter(p => tierOf(p.bst || 0) === t);
+        return g.length ? `<div class="tier-head"><span class="stars big">${starStr(t.stars)}</span><span>${t.name}</span><span class="cnt">${g.length}마리</span></div>` + g.map(cardHTML).join('') : '';
+      }).join('');
+    } else {
+      $('grid').innerHTML = list.map(cardHTML).join('');
+    }
+  }
+
+  function renderChips() {
+    $('sortChips').innerHTML = '<span class="row-label">순서</span>' +
+      `<button class="chip" type="button" data-sort="num" aria-pressed="${sortBy === 'num'}">번호 순서</button>` +
+      (hasPower ? `<button class="chip" type="button" data-sort="power" aria-pressed="${sortBy === 'power'}">★ 센 순서</button>` +
+                  `<button class="chip" type="button" data-sort="weak" aria-pressed="${sortBy === 'weak'}">☆ 약한 순서</button>` : '');
+    const t = $('typeChips');
+    t.innerHTML = '<span class="row-label">타입</span>' +
+      Object.entries(TYPES).map(([k, [ko, col]]) => `<button class="chip type" type="button" data-type="${k}" style="--t:${col}" aria-pressed="${typeSel === k}">${ko}</button>`).join('');
+  }
+
+  $('sortChips').addEventListener('click', e => {
+    const b = e.target.closest('[data-sort]'); if (!b) return;
+    sortBy = b.dataset.sort; renderChips(); renderGrid();
+  });
+  async function selectType(k) {
+    if (k === null) { typeSel = null; typeIds = null; renderChips(); renderGrid(); return; }
+    typeSel = k; if (hasPower) sortBy = 'power';      // 타입을 고르면 센 친구부터 보여 줘요
+    $('q').value = ''; $('clearQ').hidden = true;
+    renderChips();
+    $('grid').innerHTML = '<div class="loading"><span class="spin"></span>' + TYPES[k][0] + ' 타입 친구들을 찾는 중…</div>';
+    try { typeIds = await loadType(k); }
+    catch (err) { typeSel = null; typeIds = null; renderChips(); toastError(); }
+    renderGrid();
+  }
+  $('typeChips').addEventListener('click', e => {
+    const b = e.target.closest('[data-type]'); if (!b) return;
+    selectType(typeSel === b.dataset.type ? null : b.dataset.type);
+  });
+  let qTimer;
+  $('q').addEventListener('input', () => {
+    $('clearQ').hidden = !$('q').value;
+    if ($('q').value && typeSel) { typeSel = null; typeIds = null; renderChips(); }   // 이름으로 찾을 땐 모든 친구 중에서 찾아요
+    clearTimeout(qTimer); qTimer = setTimeout(renderGrid, 120);
+  });
+  $('q').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { const list = searchMatch($('q').value); if (list && list.length === 1) openDex(list[0].id); }
+  });
+  $('clearQ').addEventListener('click', () => { $('q').value = ''; $('clearQ').hidden = true; renderGrid(); $('q').focus(); });
+  $('randomBtn').addEventListener('click', () => { if (DEX.length) openDex(DEX[Math.floor(Math.random() * DEX.length)].id); });
+  document.addEventListener('click', e => {
+    const c = e.target.closest('.card[data-id], .evo button[data-id]');
+    if (c) openDex(+c.dataset.id);
+  });
+  function toastError() {
+    $('found').innerHTML = '앗! 인터넷이 잠깐 쉬고 있나 봐요. 잠시 뒤에 다시 눌러 주세요.';
+  }
+
+  /* ---------- 상세 카드 ---------- */
+  let openId = null;
+  function openDex(id) {
+    if (location.hash !== '#p' + id) location.hash = 'p' + id;   // 뒤로 가기 버튼으로 닫을 수 있게
+    else showDetail(id);
+  }
+  function closeDex() {
+    if (location.hash) history.back(); else hideDetail();
+  }
+  function hideDetail() {
+    openId = null; $('sheetBg').hidden = true; document.body.style.overflow = '';
+    try { speechSynthesis.cancel(); } catch (e) {}
+  }
+  window.addEventListener('hashchange', route);
+  function route() {
+    const m = /^#p(\d+)$/.exec(location.hash);
+    if (m && byId.has(+m[1])) showDetail(+m[1]); else if (openId) hideDetail();
+  }
+  $('sheetBg').addEventListener('click', e => { if (e.target === $('sheetBg')) closeDex(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && openId) closeDex(); });
+
+  function sizeWords(d) {
+    const cm = d.h * 10, kg = d.w / 10;
+    const m = (cm / 100).toFixed(cm < 100 ? 2 : 1).replace(/\.?0+$/, '');
+    let hNote;
+    const hr = cm / KID.cm;
+    if (hr > 1.15) hNote = `나보다 커요! 나를 ${hr >= 2 ? Math.round(hr) + '명' : '한 명 반쯤'} 쌓은 키예요.`;
+    else if (hr < 0.87) hNote = hr < 0.45 ? '아주 작아요! 두 손에 쏙 들어갈 것 같아요.' : '나보다 작아요. 내 가슴쯤 와요.';
+    else hNote = '나랑 키가 비슷해요!';
+    const wr = kg / KID.kg;
+    let wNote;
+    if (wr > 1.2) wNote = `나보다 무거워요! 나 ${wr >= 2 ? Math.round(wr) + '명' : '한 명 반쯤'}만큼 무거워요.`;
+    else if (wr < 0.8) wNote = wr < 0.1 ? '깃털처럼 가벼워요!' : '나보다 가벼워요. 안아 줄 수 있을지도 몰라요.';
+    else wNote = '나랑 몸무게가 비슷해요!';
+    return { m, kg: (+kg.toFixed(1)).toString(), hNote, wNote, cm };
+  }
+
+  async function showDetail(id) {
+    openId = id;
+    const base = byId.get(id);
+    const t0 = (TYPES.normal)[1];
+    $('sheetBg').hidden = false; document.body.style.overflow = 'hidden';
+    $('sheet').innerHTML = `<button class="x" type="button" id="xBtn" aria-label="닫기">✕</button>
+      <div class="oops"><span class="spin"></span><b style="display:inline">${esc(base.ko)} 정보를 가져오는 중…</b></div>`;
+    $('xBtn').addEventListener('click', closeDex);
+    let d;
+    try { d = await loadDetail(id); }
+    catch (err) {
+      if (openId !== id) return;
+      $('sheet').innerHTML = `<button class="x" type="button" id="xBtn" aria-label="닫기">✕</button>
+        <div class="oops"><b>앗! 정보를 못 가져왔어요</b><p>인터넷이 잠깐 쉬고 있나 봐요.</p>
+        <button class="big-btn" type="button" id="retry">다시 해 볼래요</button></div>`;
+      $('xBtn').addEventListener('click', closeDex);
+      $('retry').addEventListener('click', () => showDetail(id));
+      return;
+    }
+    if (openId !== id) return;
+    const col = (TYPES[d.types[0]] || TYPES.normal)[1];
+    const genus = base.genus || d.genus;
+    const sz = sizeWords(d);
+    const bst = d.stats.reduce((a, [, v]) => a + v, 0);
+    const tier = tierOf(bst);
+    let rankLine = '';
+    if (hasPower) {
+      const t = d.types[0];
+      const same = DEX.filter(p => p.types && p.types.includes(t));
+      const r = same.filter(p => p.bst > bst).length + 1;
+      const all = DEX.filter(p => p.bst > bst).length + 1;
+      rankLine = `<div class="rank">${(TYPES[t] || [t])[0]} 타입 친구 ${same.length}마리 중 <b>${r}등</b>이에요. 모든 친구 ${DEX.length}마리 중에서는 <b>${all}등</b>!</div>
+        <button class="big-btn plain" type="button" data-typejump="${t}">${(TYPES[t] || [t])[0]} 타입 센 순서 보기</button>`;
+    }
+    const fav = friends.has(id);
+    const tallest = Math.max(sz.cm, KID.cm);
+    const px = cm => Math.max(16, Math.round(cm / tallest * 140));
+    const kidPx = px(KID.cm), monPx = px(sz.cm);
+    const typeKo = d.types.map(t => (TYPES[t] || [t])[0]);
+    const evoHTML = d.evo.length > 1 ? d.evo.map((stage, i) =>
+        (i ? '<span class="arrow" aria-hidden="true">→</span>' : '') +
+        `<div class="col">${stage.filter(x => byId.has(x)).map(x => `<button type="button" data-id="${x}" ${x === id ? 'aria-current="true"' : ''}>${imgTag(x, '', '')}<span>${esc(byId.get(x).ko)}</span></button>`).join('')}</div>`
+      ).join('') : '';
+    const prev = byId.has(id - 1) ? id - 1 : null, next = byId.has(id + 1) ? id + 1 : null;
+
+    $('sheet').innerHTML = `
+      <button class="x" type="button" id="xBtn" aria-label="닫기">✕</button>
+      <div class="sheet-top" style="--bg:${col}33">
+        <div class="art">${imgTag(id, '', base.ko)}</div>
+        <div class="who">
+          <span class="no">No.${pad(id)}</span>
+          <h2 id="dName">${esc(base.ko)}</h2>
+          ${genus ? `<p class="genus">${esc(genus)}</p>` : ''}
+          <div class="types">${d.types.map(t => `<span class="type-pill" style="--t:${(TYPES[t] || TYPES.normal)[1]}">${(TYPES[t] || [t])[0]}</span>`).join('')}</div>
+        </div>
+      </div>
+      <div class="sheet-body">
+        <div class="actions">
+          <button class="big-btn coral" type="button" id="sayBtn">🔊 읽어 주세요</button>
+          <button class="big-btn plain" type="button" id="favBtn" aria-pressed="${fav}">${fav ? '♥ 내 친구예요' : '♡ 친구 하기'}</button>
+        </div>
+        ${d.flavor ? `<p class="say">${esc(d.flavor)}</p>` : ''}
+
+        <div class="box">
+          <h3>나랑 비교해 볼까?</h3>
+          <div class="compare">
+            <div class="cmp">
+              <div class="lbl">키</div><div class="val">${sz.m}m</div>
+              <div class="stage" aria-hidden="true">
+                <figure><div class="kid"><div class="head" style="width:${kidPx * .28}px;height:${kidPx * .28}px"></div><div class="bod" style="width:${kidPx * .38}px;height:${kidPx * .7}px"></div></div><figcaption>나</figcaption></figure>
+                <figure>${imgTag(id, '', '').replace('<img ', `<img style="height:${monPx}px;width:auto;max-width:150px" `)}<figcaption>${esc(base.ko)}</figcaption></figure>
+              </div>
+              <div class="note">${sz.hNote}</div>
+            </div>
+            <div class="cmp">
+              <div class="lbl">몸무게</div><div class="val">${sz.kg}kg</div>
+              <div class="note" style="margin-top:10px">${sz.wNote}</div>
+              <div class="note" style="color:var(--ink-soft)">8살 친구는 보통 ${KID.kg}kg쯤이에요.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>얼마나 셀까?</h3>
+          <div class="power"><span class="stars big" aria-label="힘 별 ${tier.stars}개">${starStr(tier.stars)}</span><span>${tier.name}</span></div>
+          ${rankLine}
+          <div style="height:14px"></div>
+          <div class="stats">${d.stats.filter(([k]) => STATS[k]).map(([k, v]) => `
+            <div class="stat"><span class="nm">${STATS[k][0]}</span><span class="bar"><i style="--c:${STATS[k][1]};width:0%" data-w="${Math.min(100, v / 180 * 100)}"></i></span><span class="v">${v}</span></div>`).join('')}
+          </div>
+          <p class="stat-hint">막대가 길수록 그 힘이 세요. 모두 더하면 <b>${bst}</b>점이에요. 점수가 클수록 별이 많아요.</p>
+        </div>
+
+        ${evoHTML ? `<div class="box"><h3>진화하면?</h3><div class="evo">${evoHTML}</div></div>` : ''}
+
+        <div class="navrow">
+          ${prev ? `<button class="big-btn plain" type="button" data-go="${prev}">← ${esc(byId.get(prev).ko)}</button>` : '<span></span>'}
+          ${next ? `<button class="big-btn plain" type="button" data-go="${next}">${esc(byId.get(next).ko)} →</button>` : '<span></span>'}
+        </div>
+      </div>`;
+    $('sheetBg').scrollTop = 0;
+    $('xBtn').addEventListener('click', closeDex);
+    $('sheet').querySelectorAll('[data-typejump]').forEach(b => b.addEventListener('click', () => {
+      closeDex(); setView('dex'); selectType(b.dataset.typejump); window.scrollTo(0, 0);
+    }));
+    $('sheet').querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => {
+      history.replaceState(null, '', '#p' + b.dataset.go); showDetail(+b.dataset.go);
+    }));
+    requestAnimationFrame(() => requestAnimationFrame(() =>
+      $('sheet').querySelectorAll('.bar i').forEach(i => i.style.width = i.dataset.w + '%')));
+
+    const sayText = `${base.ko}. ${genus ? genus + '. ' : ''}${typeKo.join(', ')} 타입이에요. ${d.flavor || ''}`;
+    const sayBtn = $('sayBtn');
+    if (!('speechSynthesis' in window)) sayBtn.hidden = true;
+    sayBtn.addEventListener('click', () => speak(sayText));
+    $('favBtn').addEventListener('click', () => {
+      if (friends.has(id)) friends.delete(id); else friends.add(id);
+      store.set('friends', [...friends]);
+      const on = friends.has(id);
+      $('favBtn').textContent = on ? '♥ 내 친구예요' : '♡ 친구 하기';
+      $('favBtn').setAttribute('aria-pressed', on);
+      updateFriendCount(); refreshCurrentView();
+    });
+    $('xBtn').focus({ preventScroll: true });
+  }
+
+  function speak(text) {
+    try {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'ko-KR'; u.rate = 0.9; u.pitch = 1.1;
+      const v = speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('ko'));
+      if (v) u.voice = v;
+      speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+
+  /* ---------- 내 친구들 ---------- */
+  function updateFriendCount() { $('friendCount').textContent = friends.size; }
+  function renderFriends() {
+    const list = [...friends].filter(id => byId.has(id)).sort((a, b) => a - b).map(id => byId.get(id));
+    $('friendsTitle').innerHTML = list.length ? `내가 좋아하는 친구 <b style="color:var(--coral)">${list.length}</b>마리` : '내가 좋아하는 친구들';
+    $('friendsGrid').innerHTML = list.length ? list.map(cardHTML).join('')
+      : `<div class="empty"><b>아직 친구가 없어요</b>도감에서 마음에 드는 포켓몬을 누르고 <b style="display:inline;font-size:1em">♡ 친구 하기</b>를 눌러 보세요.</div>`;
+  }
+
+  /* ---------- 퀴즈 난이도 (도감과 따로, 세대로 나눠요) ---------- */
+  const LEVELS = {
+    easy:   { max: 151,      choices: 3, pz: 2 },   // 1세대
+    normal: { max: 493,      choices: 4, pz: 3 },   // 1~4세대
+    hard:   { max: Infinity, choices: 4, pz: 4 },   // 모든 세대
+  };
+  let level = store.get('level', 'easy');
+  if (!LEVELS[level]) level = 'easy';
+  const L = () => LEVELS[level];
+  const pool = () => DEX.filter(p => p.id <= L().max);
+  const pickFrom = P => P[Math.floor(Math.random() * P.length)];
+
+  /* ---------- 퀴즈 1: 그림자 퀴즈 (그림만 쓰고 API 요청은 안 해요) ---------- */
+  let streak = 0, best = 0, current = null;
+  function newQuestion() {
+    const P = pool(); if (P.length < 4) return;
+    const pick = () => pickFrom(P);
+    const ans = pick(); const opts = [ans];
+    // 어려움: 같은 타입 친구들로 보기를 만들어서 더 헷갈리게 해요
+    let near = [];
+    if (level === 'hard' && ans.types && ans.types.length) near = P.filter(p => p !== ans && p.types && p.types[0] === ans.types[0]);
+    let guard = 0;
+    while (opts.length < L().choices && guard++ < 500) {
+      const o = near.length >= L().choices && guard < 200 ? pickFrom(near) : pick();
+      if (!opts.includes(o) && o.ko !== ans.ko) opts.push(o);
+    }
+    opts.sort(() => Math.random() - .5);
+    current = ans;
+    $('shadow').classList.remove('show');
+    $('shadowImg').src = ART(ans.id);
+    $('shadowImg').onerror = () => { $('shadowImg').onerror = null; $('shadowImg').src = SPRITE(ans.id); };
+    $('verdict').textContent = '';
+    $('nextQ').hidden = true;
+    $('answers').innerHTML = opts.map(o => `<button type="button" data-a="${o.id}">${esc(o.ko)}</button>`).join('');
+    const pre = new Image(); pre.src = ART(pick().id);   // 다음 그림 미리 불러오기
+  }
+  $('answers').addEventListener('click', e => {
+    const b = e.target.closest('[data-a]'); if (!b || b.disabled) return;
+    const ok = +b.dataset.a === current.id;
+    $('answers').querySelectorAll('button').forEach(x => {
+      x.disabled = true;
+      if (+x.dataset.a === current.id) x.classList.add('right');
+    });
+    if (!ok) b.classList.add('wrong');
+    $('shadow').classList.add('show');
+    if (ok) { streak++; if (streak > best) { best = streak; store.set('best-' + level, best); } $('verdict').textContent = `정답이에요! ${current.ko}!`; speak(`정답! ${current.ko}`); }
+    else { streak = 0; $('verdict').textContent = `아쉬워요! 정답은 ${ieyo(current.ko)}.`; speak(`정답은 ${current.ko}`); }
+    $('streak').textContent = streak; $('bestStreak').textContent = best;
+    $('nextQ').hidden = false; $('nextQ').focus({ preventScroll: true });
+  });
+  $('nextQ').addEventListener('click', newQuestion);
+
+
+  /* ---------- 퀴즈 2: 초성 퀴즈 ---------- */
+  const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+  const choOf = ch => { const c = ch.charCodeAt(0) - 0xAC00; return c >= 0 && c < 11172 ? CHO[Math.floor(c / 588)] : ch; };
+  const norm = w => w.replace(/[\s.·\-]/g, '').toLowerCase();
+  let choCur = null, choOpen = 0, choStreak = 0, choBest = 0, choDone = false;
+  function choRender() {
+    const letters = [...choCur.ko.replace(/\s/g, '')];
+    $('choHint').innerHTML = letters.map((ch, i) => `<span class="${i < choOpen ? 'open' : ''}">${esc(i < choOpen ? ch : choOf(ch))}</span>`).join('');
+  }
+  function choNew() {
+    const P = pool().filter(p => /[가-힣]/.test(p.ko) && p.ko.length <= 6);
+    choCur = pickFrom(P);
+    choOpen = level === 'easy' ? 1 : 0;          // 쉬움: 첫 글자를 열어 두고 시작
+    choDone = false;
+    $('choPic').classList.toggle('show', level !== 'hard');   // 어려움: 사진 대신 그림자
+    $('choImg').src = ART(choCur.id);
+    $('choImg').onerror = () => { $('choImg').onerror = null; $('choImg').src = SPRITE(choCur.id); };
+    $('choInput').value = ''; $('choInput').disabled = false;
+    $('choVerdict').textContent = `${[...choCur.ko.replace(/\s/g, '')].length}글자 이름이에요${level === 'hard' ? ' · 그림자를 보고 맞혀요' : ''}`;
+    $('choMore').hidden = false; $('choGive').hidden = false; $('choNext').hidden = true;
+    choRender();
+  }
+  function choFinish(ok) {
+    choDone = true; choOpen = 99; choRender(); $('choPic').classList.add('show');
+    $('choInput').disabled = true; $('choMore').hidden = true; $('choGive').hidden = true; $('choNext').hidden = false;
+    if (ok) { choStreak++; if (choStreak > choBest) { choBest = choStreak; store.set('choBest-' + level, choBest); } $('choVerdict').textContent = `정답이에요! ${choCur.ko}!`; speak(`정답! ${choCur.ko}`); }
+    else { choStreak = 0; $('choVerdict').textContent = `정답은 ${ieyo(choCur.ko)}.`; speak(`정답은 ${choCur.ko}`); }
+    $('choStreak').textContent = choStreak; $('choBest').textContent = choBest;
+    $('choNext').focus({ preventScroll: true });
+  }
+  $('choForm').addEventListener('submit', e => {
+    e.preventDefault(); if (choDone) return;
+    const v = norm($('choInput').value); if (!v) return;
+    if (v === norm(choCur.ko)) choFinish(true);
+    else { $('choVerdict').textContent = '아니에요, 다시 해 볼까요?'; $('choInput').select(); }
+  });
+  $('choMore').addEventListener('click', () => {
+    const n = [...choCur.ko.replace(/\s/g, '')].length;
+    if (choOpen < n - 1) { choOpen++; choRender(); $('choVerdict').textContent = '글자를 하나 보여 줬어요!'; }
+    else $('choVerdict').textContent = '이제 마지막 글자만 남았어요!';
+  });
+  $('choGive').addEventListener('click', () => choFinish(false));
+  $('choNext').addEventListener('click', () => { choNew(); $('choInput').focus({ preventScroll: true }); });
+
+  /* ---------- 퀴즈 3: 퍼즐 맞추기 ---------- */
+  let pzN = 3, pzCur = null, pzOrder = [], pzSel = null, pzMoves = 0, pzSolved = false, pzDone = store.get('pzDone', 0);
+  function pzBg(id) {
+    // 빈 조각도 서로 다르게 보이도록 하늘, 해, 풀밭을 배경으로 깔아요
+    return `url(${ART(id)}), radial-gradient(circle at 82% 16%, #ffd34d 0 11%, transparent 11.5%), linear-gradient(to bottom, #bfe6ff 0 68%, #8fd16a 68% 100%)`;
+  }
+  function pzRender() {
+    const n = pzN, bg = pzBg(pzCur.id);
+    $('puzzle').style.setProperty('--n', n);
+    $('puzzle').classList.toggle('done', pzSolved);
+    $('puzzle').innerHTML = pzOrder.map((piece, pos) => {
+      const r = Math.floor(piece / n), c = piece % n;
+      return `<button type="button" class="tile${pzSel === pos ? ' sel' : ''}" data-pos="${pos}" aria-label="${pos + 1}번 조각"
+        style="background-image:${bg};background-size:${n * 100}% ${n * 100}%;background-position:${c / (n - 1) * 100}% ${r / (n - 1) * 100}%"></button>`;
+    }).join('');
+    $('pzMoves').textContent = pzMoves; $('pzDone').textContent = pzDone;
+  }
+  function pzNew(keep) {
+    if (!keep) pzCur = pickFrom(pool());
+    pzN = L().pz;
+    $('pzPeekBox').hidden = level === 'hard';   // 어려움: 완성 그림 없이 맞춰요
+    $('pzHelp').textContent = `${pzN * pzN}조각이에요. 바꾸고 싶은 조각 두 개를 차례로 눌러 보세요.`;
+    const n = pzN * pzN;
+    do { pzOrder = [...Array(n).keys()].sort(() => Math.random() - .5); } while (pzOrder.every((v, i) => v === i));
+    pzSel = null; pzMoves = 0; pzSolved = false;
+    $('pzPeek').src = ART(pzCur.id);
+    $('pzPeek').style.background = 'radial-gradient(circle at 82% 16%, #ffd34d 0 11%, transparent 11.5%), linear-gradient(to bottom, #bfe6ff 0 68%, #8fd16a 68% 100%)';   // 퍼즐과 같은 배경
+    $('pzVerdict').textContent = '';
+    pzRender();
+  }
+  $('puzzle').addEventListener('click', e => {
+    const t = e.target.closest('.tile'); if (!t || pzSolved) return;
+    const pos = +t.dataset.pos;
+    if (pzSel === null) { pzSel = pos; }
+    else if (pzSel === pos) { pzSel = null; }
+    else {
+      [pzOrder[pzSel], pzOrder[pos]] = [pzOrder[pos], pzOrder[pzSel]];
+      pzSel = null; pzMoves++;
+      if (pzOrder.every((v, i) => v === i)) {
+        pzSolved = true; pzDone++; store.set('pzDone', pzDone);
+        $('pzVerdict').textContent = `완성! ${ieyo(pzCur.ko)}! ${pzMoves}번 만에 맞췄어요.`;
+        speak(`완성! ${pzCur.ko}`);
+        $('pzPeekBox').hidden = false;
+      }
+    }
+    pzRender();
+  });
+  $('pzShuffle').addEventListener('click', () => pzNew(true));
+  $('pzNext').addEventListener('click', () => pzNew(false));
+
+  /* ---------- 난이도 바꾸기 ---------- */
+  function renderLevel() {
+    $('quizLevel').querySelectorAll('[data-lv]').forEach(b => b.setAttribute('aria-checked', b.dataset.lv === level));
+    best = store.get('best-' + level, 0); choBest = store.get('choBest-' + level, 0);
+    streak = 0; choStreak = 0;
+    $('streak').textContent = 0; $('bestStreak').textContent = best;
+    $('choStreak').textContent = 0; $('choBest').textContent = choBest;
+  }
+  $('quizLevel').addEventListener('click', e => {
+    const b = e.target.closest('[data-lv]'); if (!b || b.dataset.lv === level) return;
+    level = b.dataset.lv; store.set('level', level);
+    renderLevel();
+    current = null; choCur = null; pzCur = null;   // 새 난이도로 문제를 다시 내요
+    setQuiz(quizMode);
+  });
+
+  /* ---------- 퀴즈 고르기 ---------- */
+  let quizMode = 'shadow';
+  $('quizTabs').addEventListener('click', e => {
+    const b = e.target.closest('[data-q]'); if (!b) return;
+    setQuiz(b.dataset.q);
+  });
+  function setQuiz(m) {
+    quizMode = m;
+    $('quizTabs').querySelectorAll('[data-q]').forEach(x => x.setAttribute('aria-selected', x.dataset.q === m));
+    ['shadow', 'chosung', 'puzzle'].forEach(k => $('q-' + k).hidden = k !== m);
+    if (!DEX.length) return;
+    if (m === 'shadow' && !current) newQuestion();
+    if (m === 'chosung' && !choCur) choNew();
+    if (m === 'puzzle' && !pzCur) pzNew(false);
+  }
+
+  /* ---------- 탭 ---------- */
+  let view = 'dex';
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => setView(t.dataset.view)));
+  function setView(v) {
+    view = v;
+    document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.view === v));
+    ['dex', 'quiz', 'friends'].forEach(k => $('view-' + k).hidden = k !== v);
+    if (v === 'quiz') setQuiz(quizMode);
+    refreshCurrentView();
+  }
+  function refreshCurrentView() {
+    if (view === 'friends') renderFriends();
+    if (view === 'dex') renderGrid();
+  }
+
+  /* ---------- 시작 ---------- */
+  (async function init() {
+    renderChips(); updateFriendCount();
+    renderLevel(); $('pzDone').textContent = pzDone;
+    try {
+      DEX = await loadNames();
+      byId = new Map(DEX.map(p => [p.id, p]));
+      $('grid').innerHTML = '<div class="loading"><span class="spin"></span>누가 센지 알아보는 중…</div>';
+      try { await loadPower(); } catch (e) { hasPower = false; }   // 힘 정보를 못 받아도 도감은 볼 수 있어요
+      renderChips();
+      renderGrid();
+      route();
+    } catch (err) {
+      renderGrid();
+    }
+  })();
+})();
+</script>
+</body>
+</html>
