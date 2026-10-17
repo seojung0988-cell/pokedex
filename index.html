@@ -176,6 +176,35 @@ header { padding-block: 16px 8px; display: flex; align-items: center; justify-co
 .answers button:disabled { cursor: default; }
 .verdict { min-height: 2.4em; font-family: var(--display); font-size: 1.6rem; margin: 12px 0 4px; }
 .quiz .chips { justify-content: center; flex-wrap: wrap; }
+.quiz.wide { max-width: 900px; }
+.story { font-size: 1.3rem; line-height: 1.7; margin: 8px auto 12px; max-width: 32em; word-break: keep-all; }
+.story b { color: var(--coral); }
+.counters { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 6px 0 10px; }
+.counters .grp { display: flex; flex-direction: column; gap: 4px; padding: 8px; border: 3px dashed var(--sky-deep); border-radius: 16px; background: #fbfdff; }
+.counters .row5 { display: flex; gap: 4px; }
+.counters img { width: 44px; height: 44px; object-fit: contain; }
+.counters img.bye { opacity: .22; filter: grayscale(1); }
+.counters .op { font-family: var(--display); font-size: 2.4rem; color: var(--ink-soft); }
+.eq { font-family: var(--display); font-size: clamp(2.2rem, 7vw, 3.2rem); margin: 6px 0 10px; font-variant-numeric: tabular-nums; }
+.eq .q { display: inline-block; min-width: 1.6em; padding: 0 10px; border-radius: 14px; background: var(--sun); }
+.eq .q.ok { background: var(--leaf); color: #fff; }
+.answers.four { grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 520px; margin-left: auto; margin-right: auto; }
+.answers.four button { font-size: 1.9rem; }
+.answers button.tried { background: var(--coral); color: #fff; opacity: .55; }
+.keypad { max-width: 300px; margin: 6px auto 0; }
+.kp-show { font-family: var(--display); font-size: 2.2rem; min-height: 64px; border: 3px solid var(--ink); border-radius: 16px; background: var(--paper); display: grid; place-items: center; margin-bottom: 10px; font-variant-numeric: tabular-nums; }
+.kp-keys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.kp-keys button { font-family: var(--display); font-size: 1.6rem; min-height: 56px; border: 3px solid var(--ink); border-radius: 14px; background: var(--sky); box-shadow: 0 3px 0 var(--ink); }
+.kp-keys button.soft { font-size: 1.05rem; background: var(--paper); }
+.kp-keys button.go { font-size: 1.15rem; background: var(--sun); }
+.kp-keys button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.maze-box { display: flex; justify-content: center; }
+#mzCanvas { width: min(440px, 84vw); aspect-ratio: 1; border-radius: 16px; border: 3px solid var(--ink); background: #f3fbef; touch-action: none; cursor: pointer; }
+.dpad { display: grid; grid-template-columns: repeat(3, 64px); grid-template-rows: repeat(2, 56px); gap: 8px; justify-content: center; margin: 4px auto 8px; }
+.dpad button { font-size: 1.5rem; border: 3px solid var(--ink); border-radius: 16px; background: var(--sky); box-shadow: 0 4px 0 var(--ink); touch-action: manipulation; }
+.dpad button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.diff-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.diff-pair canvas { width: 100%; aspect-ratio: 4 / 3; border: 3px solid var(--ink); border-radius: 14px; cursor: pointer; touch-action: manipulation; }
 .levels { display: flex; align-items: stretch; justify-content: center; gap: 8px; max-width: 640px; margin: 18px auto 0; flex-wrap: wrap; }
 .lv-label { align-self: center; font-family: var(--display); font-size: 1.1rem; color: var(--ink-soft); margin-right: 4px; }
 .levels button { display: flex; flex-direction: column; align-items: center; min-width: 120px; padding: 6px 14px; border: 3px solid var(--ink); border-radius: 16px; background: var(--paper); }
@@ -184,7 +213,7 @@ header { padding-block: 16px 8px; display: flex; align-items: center; justify-co
 .levels button[aria-checked="true"] { background: var(--ink); color: var(--paper); }
 .levels button[aria-checked="true"] span { color: var(--sky-deep); }
 .answers button:last-child:nth-child(odd) { grid-column: 1 / -1; }
-.qtabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 640px; margin: 18px auto 0; }
+.qtabs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; max-width: 980px; margin: 18px auto 0; }
 .qtabs button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 6px; border: 3px solid var(--ink); border-radius: 20px; background: var(--paper); box-shadow: 0 4px 0 var(--ink); }
 .qtabs button b { font-family: var(--display); font-weight: 400; font-size: 1.25rem; line-height: 1.2; }
 .qtabs button span { font-size: .85rem; color: var(--ink-soft); }
@@ -217,6 +246,13 @@ footer summary { cursor: pointer; font-weight: 700; }
   .lv-label { display: none; }
   .levels button { min-width: 0; flex: 1; padding: 6px 4px; }
   .qtabs button span { display: none; }
+  .qtabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .qtabs button b { font-size: .95rem; white-space: nowrap; }
+  .diff-pair { grid-template-columns: 1fr; }
+  .counters img { width: 30px; height: 30px; }
+  .counters .op { font-size: 1.8rem; }
+  .answers.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .story { font-size: 1.15rem; }
   .cho span { min-width: 46px; height: 56px; font-size: 1.8rem; }
   body { font-size: 17px; }
   .logo { font-size: 1.6rem; }
@@ -246,7 +282,7 @@ footer summary { cursor: pointer; font-weight: 700; }
     </div>
     <nav class="tabs" role="tablist" aria-label="메뉴">
       <button class="tab" role="tab" id="tab-dex" aria-selected="true" data-view="dex">도감</button>
-      <button class="tab" role="tab" id="tab-quiz" aria-selected="false" data-view="quiz">퀴즈 놀이</button>
+      <button class="tab" role="tab" id="tab-quiz" aria-selected="false" data-view="quiz">놀이터</button>
       <button class="tab" role="tab" id="tab-friends" aria-selected="false" data-view="friends">내 친구들<span class="count" id="friendCount">0</span></button>
     </nav>
   </header>
@@ -282,10 +318,13 @@ footer summary { cursor: pointer; font-weight: 700; }
       <button type="button" role="radio" data-lv="normal" aria-checked="false"><b>보통</b><span>1~4세대 친구들</span></button>
       <button type="button" role="radio" data-lv="hard" aria-checked="false"><b>어려움</b><span>모든 세대 친구들</span></button>
     </div>
-    <div class="qtabs" id="quizTabs" role="tablist" aria-label="퀴즈 고르기">
+    <div class="qtabs" id="quizTabs" role="tablist" aria-label="놀이 고르기">
       <button type="button" role="tab" data-q="shadow" aria-selected="true"><b>그림자 퀴즈</b><span>까만 그림자는 누구?</span></button>
       <button type="button" role="tab" data-q="chosung" aria-selected="false"><b>초성 퀴즈</b><span>ㅍㅋㅊ 는 누구?</span></button>
       <button type="button" role="tab" data-q="puzzle" aria-selected="false"><b>퍼즐 맞추기</b><span>조각을 바꿔 맞춰요</span></button>
+      <button type="button" role="tab" data-q="maze" aria-selected="false"><b>미로 찾기</b><span>친구를 만나러 가요</span></button>
+      <button type="button" role="tab" data-q="diff" aria-selected="false"><b>틀린 그림 찾기</b><span>다른 곳을 찾아요</span></button>
+      <button type="button" role="tab" data-q="math" aria-selected="false"><b>숫자 놀이</b><span>더하고 빼요</span></button>
     </div>
 
     <!-- 그림자 퀴즈 -->
@@ -327,6 +366,54 @@ footer summary { cursor: pointer; font-weight: 700; }
       </div>
       <div class="verdict" id="pzVerdict" aria-live="polite"></div>
       <div class="qbtns"><button class="big-btn plain" id="pzShuffle" type="button">다시 섞기</button><button class="big-btn" id="pzNext" type="button">다른 친구 퍼즐 →</button></div>
+    </div>
+
+    <!-- 미로 찾기 -->
+    <div class="quiz" id="q-maze" hidden>
+      <h2 id="mzTitle">친구를 만나러 가요</h2>
+      <div class="score"><span>걸음 수 <b id="mzSteps">0</b></span><span>도착한 미로 <b id="mzDone">0</b></span></div>
+      <p class="pz-help">화살표 키를 누르거나, 아래 버튼이나 미로 안의 옆 칸을 눌러서 움직여요.</p>
+      <div class="maze-box"><canvas id="mzCanvas" aria-label="미로"></canvas></div>
+      <div class="verdict" id="mzVerdict" aria-live="polite"></div>
+      <div class="dpad" aria-label="움직이기">
+        <span></span><button type="button" data-d="up" aria-label="위로">▲</button><span></span>
+        <button type="button" data-d="left" aria-label="왼쪽으로">◀</button><button type="button" data-d="down" aria-label="아래로">▼</button><button type="button" data-d="right" aria-label="오른쪽으로">▶</button>
+      </div>
+      <div class="qbtns"><button class="big-btn plain" id="mzRestart" type="button">처음 자리로</button><button class="big-btn" id="mzNext" type="button">새 미로 →</button></div>
+    </div>
+
+    <!-- 틀린 그림 찾기 -->
+    <div class="quiz wide" id="q-diff" hidden>
+      <h2>다른 곳을 찾아요</h2>
+      <div class="score"><span>찾은 곳 <b id="sdFound">0</b> / <b id="sdTotal">0</b></span><span>다 찾은 그림 <b id="sdDone">0</b></span></div>
+      <p class="pz-help">두 그림에서 다른 곳을 찾아 눌러 보세요. 어느 쪽 그림을 눌러도 돼요.</p>
+      <div class="diff-pair">
+        <canvas id="sdA" aria-label="왼쪽 그림"></canvas>
+        <canvas id="sdB" aria-label="오른쪽 그림"></canvas>
+      </div>
+      <div class="verdict" id="sdVerdict" aria-live="polite"></div>
+      <div class="qbtns"><button class="big-btn plain" id="sdHint" type="button">힌트 볼래요</button><button class="big-btn" id="sdNext" type="button">새 그림 →</button></div>
+    </div>
+
+    <!-- 숫자 놀이: 덧셈 뺄셈 -->
+    <div class="quiz" id="q-math" hidden>
+      <h2>숫자 놀이</h2>
+      <div class="score"><span>연속 정답 <b id="mtStreak">0</b></span><span>최고 기록 <b id="mtBest">0</b></span><span>푼 문제 <b id="mtSolved">0</b></span></div>
+      <p class="story" id="mtStory"></p>
+      <div class="counters" id="mtPics" aria-hidden="true"></div>
+      <div class="eq" id="mtEq"></div>
+      <div class="answers four" id="mtChoices"></div>
+      <div class="keypad" id="mtPad" hidden>
+        <div class="kp-show" id="mtTyped" aria-live="polite">&nbsp;</div>
+        <div class="kp-keys">
+          <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button>
+          <button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button>
+          <button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button>
+          <button type="button" data-k="del" class="soft">지우기</button><button type="button" data-k="0">0</button><button type="button" data-k="ok" class="go">확인</button>
+        </div>
+      </div>
+      <div class="verdict" id="mtVerdict" aria-live="polite"></div>
+      <div class="qbtns"><button class="big-btn plain" id="mtSay" type="button">🔊 문제 읽어 주세요</button><button class="big-btn" id="mtNext" type="button" hidden>다음 문제 →</button></div>
     </div>
   </main>
 
@@ -986,6 +1073,302 @@ footer summary { cursor: pointer; font-weight: 700; }
   $('pzShuffle').addEventListener('click', () => pzNew(true));
   $('pzNext').addEventListener('click', () => pzNew(false));
 
+  // 받침에 따라 을/를, 이/가 고르기 (숫자로 끝나면 숫자 읽는 소리 기준)
+  const josa = (w, a, b) => { const ch = w[w.length - 1], c = ch.charCodeAt(0) - 0xAC00;
+    const has = c >= 0 && c < 11172 ? c % 28 !== 0 : '013678'.includes(ch); return w + (has ? a : b); };
+  /* ---------- 놀이 4: 미로 찾기 (공간 감각) ---------- */
+  const MZ_SIZE = { easy: 6, normal: 9, hard: 13 };
+  let mz = null, mzDone = store.get('mzDone', 0);
+  const loadImg = id => { const im = new Image(); im.src = ART(id); im.onerror = () => { if (!im.dataset.f) { im.dataset.f = 1; im.src = SPRITE(id); } }; im.onload = () => mzDraw(); return im; };
+  function mzNew() {
+    const n = MZ_SIZE[level];
+    // 벽 정보: 각 칸마다 [위, 오른쪽, 아래, 왼쪽] 벽이 있는지
+    const walls = Array.from({ length: n * n }, () => [1, 1, 1, 1]);
+    const seen = new Array(n * n).fill(false);
+    const stack = [0]; seen[0] = true;
+    const DIRS = [[0, -1, 0, 2], [1, 0, 1, 3], [0, 1, 2, 0], [-1, 0, 3, 1]];
+    while (stack.length) {   // 길을 하나씩 파 나가며 미로를 만들어요
+      const c = stack[stack.length - 1], x = c % n, y = Math.floor(c / n);
+      const opts = DIRS.map(([dx, dy, w, ow]) => [x + dx, y + dy, w, ow]).filter(([nx, ny]) => nx >= 0 && ny >= 0 && nx < n && ny < n && !seen[ny * n + nx]);
+      if (!opts.length) { stack.pop(); continue; }
+      const [nx, ny, w, ow] = opts[Math.floor(Math.random() * opts.length)];
+      const nc = ny * n + nx;
+      walls[c][w] = 0; walls[nc][ow] = 0; seen[nc] = true; stack.push(nc);
+    }
+    const P = pool();
+    const hero = pickFrom(P); let friend = pickFrom(P); while (friend === hero && P.length > 1) friend = pickFrom(P);
+    mz = { n, walls, pos: 0, goal: n * n - 1, steps: 0, trail: new Set([0]), done: false, hero, friend, heroImg: loadImg(hero.id), friendImg: loadImg(friend.id) };
+    $('mzTitle').textContent = `${hero.ko}, ${josa(friend.ko, '을', '를')} 만나러 가요!`;
+    $('mzVerdict').textContent = '';
+    $('mzSteps').textContent = 0; $('mzDone').textContent = mzDone;
+    mzDraw();
+  }
+  function mzDraw() {
+    if (!mz) return;
+    const cv = $('mzCanvas'), dpr = window.devicePixelRatio || 1, W = cv.clientWidth || 440;
+    if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(W * dpr); }
+    const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = mz.n, cs = W / n;
+    g.fillStyle = '#f3fbef'; g.fillRect(0, 0, W, W);
+    g.fillStyle = 'rgba(255, 211, 77, .45)';               // 지나온 길
+    mz.trail.forEach(c => g.fillRect((c % n) * cs + cs * .2, Math.floor(c / n) * cs + cs * .2, cs * .6, cs * .6));
+    g.strokeStyle = '#233049'; g.lineWidth = Math.max(2.5, cs * .1); g.lineCap = 'round';
+    g.beginPath();
+    mz.walls.forEach((w, c) => {
+      const x = (c % n) * cs, y = Math.floor(c / n) * cs;
+      if (w[0]) { g.moveTo(x, y); g.lineTo(x + cs, y); }
+      if (w[1]) { g.moveTo(x + cs, y); g.lineTo(x + cs, y + cs); }
+      if (w[2]) { g.moveTo(x, y + cs); g.lineTo(x + cs, y + cs); }
+      if (w[3]) { g.moveTo(x, y); g.lineTo(x, y + cs); }
+    });
+    g.stroke();
+    const put = (im, c) => { if (im.complete && im.naturalWidth) g.drawImage(im, (c % n) * cs + cs * .05, Math.floor(c / n) * cs + cs * .05, cs * .9, cs * .9); };
+    g.fillStyle = 'rgba(58, 167, 109, .25)'; g.fillRect((mz.goal % n) * cs + 3, Math.floor(mz.goal / n) * cs + 3, cs - 6, cs - 6);
+    put(mz.friendImg, mz.goal);
+    if (!mz.done) { g.fillStyle = 'rgba(255, 107, 87, .25)'; g.beginPath(); g.arc((mz.pos % n + .5) * cs, (Math.floor(mz.pos / n) + .5) * cs, cs * .46, 0, 7); g.fill(); }
+    put(mz.heroImg, mz.pos);
+  }
+  function mzMove(dir) {
+    if (!mz || mz.done) return;
+    const n = mz.n, x = mz.pos % n, y = Math.floor(mz.pos / n);
+    const k = { up: 0, right: 1, down: 2, left: 3 }[dir];
+    if (mz.walls[mz.pos][k]) return;                       // 벽이면 못 가요
+    const nx = x + [0, 1, 0, -1][k], ny = y + [-1, 0, 1, 0][k];
+    mz.pos = ny * n + nx; mz.steps++; mz.trail.add(mz.pos);
+    $('mzSteps').textContent = mz.steps;
+    if (mz.pos === mz.goal) {
+      mz.done = true; mzDone++; store.set('mzDone', mzDone); $('mzDone').textContent = mzDone;
+      $('mzVerdict').textContent = `도착! ${josa(mz.hero.ko, '이', '가')} ${mz.steps}걸음 만에 친구를 만났어요!`;
+      speak(`도착! ${josa(mz.friend.ko, '을', '를')} 만났어요`);
+    }
+    mzDraw();
+  }
+  document.querySelector('.dpad').addEventListener('click', e => { const b = e.target.closest('[data-d]'); if (b) mzMove(b.dataset.d); });
+  document.addEventListener('keydown', e => {
+    if (view !== 'quiz' || quizMode !== 'maze' || openId) return;
+    const d = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' }[e.key];
+    if (d) { e.preventDefault(); mzMove(d); }
+  });
+  $('mzCanvas').addEventListener('pointerdown', e => {      // 옆 칸을 누르면 그쪽으로 한 칸
+    if (!mz) return;
+    const r = $('mzCanvas').getBoundingClientRect(), cs = r.width / mz.n;
+    const cx = Math.floor((e.clientX - r.left) / cs), cy = Math.floor((e.clientY - r.top) / cs);
+    const x = mz.pos % mz.n, y = Math.floor(mz.pos / mz.n), dx = cx - x, dy = cy - y;
+    if (Math.abs(dx) >= Math.abs(dy) && dx) mzMove(dx > 0 ? 'right' : 'left');
+    else if (dy) mzMove(dy > 0 ? 'down' : 'up');
+  });
+  $('mzRestart').addEventListener('click', () => { if (!mz) return; mz.pos = 0; mz.steps = 0; mz.done = false; mz.trail = new Set([0]); $('mzSteps').textContent = 0; $('mzVerdict').textContent = ''; mzDraw(); });
+  $('mzNext').addEventListener('click', mzNew);
+  window.addEventListener('resize', () => { mzDraw(); sdDraw(); });
+
+  /* ---------- 놀이 5: 틀린 그림 찾기 (관찰력) ---------- */
+  const SD_COUNT = { easy: 3, normal: 5, hard: 7 };
+  const SD_COLORS = ['#ff6b57', '#ffd34d', '#5a8fe6', '#e07fb4', '#9b4fa5', '#3aa76d', '#ee7f30'];
+  const SW = 400, SH = 300;   // 그림 크기 (화면에 맞춰 늘어나요)
+  let sd = null, sdDone = store.get('sdDone', 0);
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  function sdObj(type, x, y, sz) { return { type, x, y, sz, color: SD_COLORS[Math.floor(Math.random() * SD_COLORS.length)], flip: false }; }
+  function sdNew() {
+    const objs = [], want = { easy: 9, normal: 12, hard: 15 }[level];
+    const far = (x, y, d) => objs.every(o => Math.hypot(o.x - x, o.y - y) > d + (o.type === 'mon' ? 18 : 0)) && !(x > SW - 85 && y < 75);   // 해 자리는 비워 둬요
+    const P = pool();
+    // 포켓몬 친구 두 마리를 먼저 왼쪽, 오른쪽에 나눠 세워요
+    [[70, SW / 2 - 40], [SW / 2 + 40, SW - 70]].forEach(([a, b]) => {
+      const pk = pickFrom(P), o = sdObj('mon', rnd(a, b), rnd(165, 215), 46); o.mon = pk; o.img = sdImg(pk.id); objs.push(o);
+    });
+    const skyKinds = ['cloud', 'balloon', 'cloud'], groundKinds = ['tree', 'flower', 'mushroom', 'rock', 'flower', 'mushroom', 'tree'];
+    const skyMax = Math.round(want * .3);
+    let guard = 0, skyN = 0;
+    while (objs.length < want + 2 && guard++ < 3000) {
+      const sky = skyN < skyMax && Math.random() < .35;
+      const list = sky ? skyKinds : groundKinds, type = list[Math.floor(Math.random() * list.length)];
+      const x = rnd(30, SW - 30), y = sky ? rnd(28, 110) : rnd(160, SH - 20);
+      const sz = type === 'tree' ? rnd(30, 40) : type === 'cloud' ? rnd(22, 30) : rnd(14, 20);
+      if (far(x, y, sky ? 60 : 42)) { objs.push(sdObj(type, x, y, sz)); if (sky) skyN++; }
+    }
+    // 바꿀 곳 고르기: 서로 멀리 떨어진 것들로
+    const count = SD_COUNT[level], diffs = [], order = objs.map((_, i) => i).sort(() => Math.random() - .5);
+    for (const i of order) {
+      if (diffs.length >= count) break;
+      const o = objs[i];
+      if (!diffs.every(d => Math.hypot(objs[d.i].x - o.x, objs[d.i].y - o.y) > 60)) continue;
+      const ways = o.type === 'mon' ? ['swap', 'flip', 'gone'] : o.type === 'cloud' || o.type === 'rock' ? ['gone', 'big'] : ['color', 'gone', 'big'];
+      diffs.push({ i, how: ways[Math.floor(Math.random() * ways.length)], side: Math.random() < .5 ? 'A' : 'B', found: false });
+    }
+    // 오른쪽(또는 왼쪽) 그림에만 바뀐 모습을 만들어 둬요
+    for (const d of diffs) {
+      const o = objs[d.i], alt = { ...o };
+      if (d.how === 'color') { let c; do { c = SD_COLORS[Math.floor(Math.random() * SD_COLORS.length)]; } while (c === o.color); alt.color = c; }
+      if (d.how === 'big') alt.sz = o.sz * 1.55;
+      if (d.how === 'flip') alt.flip = true;
+      if (d.how === 'swap') { let pk; do { pk = pickFrom(P); } while (pk === o.mon && P.length > 1); alt.mon = pk; alt.img = sdImg(pk.id); }
+      if (d.how === 'gone') alt.gone = true;
+      d.alt = alt;
+    }
+    sd = { objs, diffs, done: false, wrongAt: null, hintAt: null };
+    $('sdTotal').textContent = diffs.length; $('sdFound').textContent = 0; $('sdDone').textContent = sdDone;
+    $('sdVerdict').textContent = `다른 곳이 ${diffs.length}군데 있어요!`;
+    sdDraw();
+  }
+  function sdImg(id) { const im = new Image(); im.onload = () => sdDraw(); im.onerror = () => { if (!im.dataset.f) { im.dataset.f = 1; im.src = SPRITE(id); } }; im.src = ART(id); return im; }
+  function sdPaintObj(g, o) {
+    if (o.gone) return;
+    const { x, y, sz } = o;
+    g.save();
+    if (o.type === 'cloud') { g.fillStyle = '#fff'; [[0, 0, 1], [-.9, .25, .7], [.9, .25, .75], [.35, -.35, .7]].forEach(([dx, dy, r]) => { g.beginPath(); g.arc(x + dx * sz, y + dy * sz, sz * r, 0, 7); g.fill(); }); }
+    if (o.type === 'tree') { g.fillStyle = '#8a5a35'; g.fillRect(x - sz * .15, y - sz * .2, sz * .3, sz * .9); g.fillStyle = o.color === '#3aa76d' ? '#2e8b57' : '#3aa76d'; if (o.leaf) g.fillStyle = o.leaf; g.beginPath(); g.arc(x, y - sz * .55, sz * .7, 0, 7); g.fill(); g.fillStyle = o.color; [[-.3, -.6], [.25, -.75], [.1, -.35]].forEach(([dx, dy]) => { g.beginPath(); g.arc(x + dx * sz, y + dy * sz, sz * .1, 0, 7); g.fill(); }); }
+    if (o.type === 'flower') { g.strokeStyle = '#3aa76d'; g.lineWidth = 3; g.beginPath(); g.moveTo(x, y); g.lineTo(x, y + sz * 1.3); g.stroke(); g.fillStyle = o.color; for (let k = 0; k < 5; k++) { const a = k * 1.2566; g.beginPath(); g.arc(x + Math.cos(a) * sz * .55, y + Math.sin(a) * sz * .55, sz * .42, 0, 7); g.fill(); } g.fillStyle = '#ffd34d'; g.beginPath(); g.arc(x, y, sz * .32, 0, 7); g.fill(); }
+    if (o.type === 'mushroom') { g.fillStyle = '#f7ecd9'; g.fillRect(x - sz * .3, y, sz * .6, sz * .9); g.fillStyle = o.color; g.beginPath(); g.ellipse(x, y, sz, sz * .7, 0, Math.PI, 0); g.fill(); g.fillStyle = '#fff'; [[-.45, -.3], [.35, -.4], [0, -.55]].forEach(([dx, dy]) => { g.beginPath(); g.arc(x + dx * sz, y + dy * sz, sz * .13, 0, 7); g.fill(); }); }
+    if (o.type === 'rock') { g.fillStyle = '#9aa4b1'; g.beginPath(); g.ellipse(x, y, sz * 1.2, sz * .75, 0, 0, 7); g.fill(); g.fillStyle = '#b8c1cc'; g.beginPath(); g.ellipse(x - sz * .3, y - sz * .25, sz * .4, sz * .2, 0, 0, 7); g.fill(); }
+    if (o.type === 'balloon') { g.strokeStyle = '#5b6a82'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(x, y + sz); g.quadraticCurveTo(x + 6, y + sz * 1.8, x, y + sz * 2.6); g.stroke(); g.fillStyle = o.color; g.beginPath(); g.ellipse(x, y, sz * .8, sz, 0, 0, 7); g.fill(); g.fillStyle = 'rgba(255,255,255,.5)'; g.beginPath(); g.ellipse(x - sz * .3, y - sz * .35, sz * .15, sz * .25, 0, 0, 7); g.fill(); }
+    if (o.type === 'mon' && o.img && o.img.complete && o.img.naturalWidth) {
+      g.translate(x, y); if (o.flip) g.scale(-1, 1);
+      g.drawImage(o.img, -sz, -sz, sz * 2, sz * 2);
+    }
+    g.restore();
+  }
+  function sdPaint(cv, side) {
+    const dpr = window.devicePixelRatio || 1, W = cv.clientWidth || SW;
+    if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(W * .75 * dpr); }
+    const g = cv.getContext('2d'); const k = W / SW; g.setTransform(dpr * k, 0, 0, dpr * k, 0, 0);
+    const sky = g.createLinearGradient(0, 0, 0, SH); sky.addColorStop(0, '#bfe6ff'); sky.addColorStop(.5, '#e6f3fb');
+    g.fillStyle = sky; g.fillRect(0, 0, SW, SH);
+    g.fillStyle = '#ffd34d'; g.beginPath(); g.arc(SW - 40, 38, 22, 0, 7); g.fill();
+    g.fillStyle = '#8fd16a'; g.beginPath(); g.moveTo(0, 150); g.quadraticCurveTo(SW * .3, 125, SW * .55, 148); g.quadraticCurveTo(SW * .8, 168, SW, 140); g.lineTo(SW, SH); g.lineTo(0, SH); g.fill();
+    const swapped = new Map(sd.diffs.filter(d => d.side === side).map(d => [d.i, d.alt]));
+    sd.objs.map((o, i) => swapped.get(i) || o).sort((a, b) => (a.type === 'mon') - (b.type === 'mon') || a.y - b.y).forEach(o => sdPaintObj(g, o));
+    g.lineWidth = 4;
+    sd.diffs.forEach(d => { if (!d.found) return; const o = sd.objs[d.i]; g.strokeStyle = '#ff6b57'; g.beginPath(); g.arc(o.x, o.y, sdRadius(d), 0, 7); g.stroke(); });
+    if (sd.hintAt) { g.strokeStyle = 'rgba(58,167,109,.9)'; g.setLineDash([6, 6]); g.beginPath(); g.arc(sd.hintAt.x, sd.hintAt.y, 52, 0, 7); g.stroke(); g.setLineDash([]); }
+    if (sd.wrongAt) { g.strokeStyle = '#5b6a82'; g.lineWidth = 4; const { x, y } = sd.wrongAt; g.beginPath(); g.moveTo(x - 10, y - 10); g.lineTo(x + 10, y + 10); g.moveTo(x + 10, y - 10); g.lineTo(x - 10, y + 10); g.stroke(); }
+  }
+  const sdRadius = d => { const o = sd.objs[d.i]; return Math.max(26, (d.how === 'big' ? o.sz * 1.55 : o.sz) * (o.type === 'tree' ? 1.2 : o.type === 'mon' ? 1 : 1.5)); };
+  function sdDraw() { if (!sd || $('q-diff').hidden) return; sdPaint($('sdA'), 'A'); sdPaint($('sdB'), 'B'); }
+  function sdTap(e) {
+    if (!sd || sd.done) return;
+    const r = e.currentTarget.getBoundingClientRect(), k = SW / r.width;
+    const x = (e.clientX - r.left) * k, y = (e.clientY - r.top) * k;
+    const hit = sd.diffs.find(d => !d.found && Math.hypot(sd.objs[d.i].x - x, (sd.objs[d.i].y - (sd.objs[d.i].type === 'tree' ? sd.objs[d.i].sz * .4 : 0)) - y) < sdRadius(d) + 8);
+    sd.wrongAt = null; sd.hintAt = null;
+    if (hit) {
+      hit.found = true;
+      const n = sd.diffs.filter(d => d.found).length;
+      $('sdFound').textContent = n;
+      if (n === sd.diffs.length) {
+        sd.done = true; sdDone++; store.set('sdDone', sdDone); $('sdDone').textContent = sdDone;
+        $('sdVerdict').textContent = '다 찾았어요! 눈이 정말 좋아요!'; speak('다 찾았어요! 대단해요');
+      } else $('sdVerdict').textContent = `찾았다! ${sd.diffs.length - n}군데 남았어요.`;
+    } else {
+      sd.wrongAt = { x, y }; $('sdVerdict').textContent = '거기는 똑같아요. 다시 찾아볼까요?';
+      setTimeout(() => { if (sd) { sd.wrongAt = null; sdDraw(); } }, 700);
+    }
+    sdDraw();
+  }
+  $('sdA').addEventListener('click', sdTap); $('sdB').addEventListener('click', sdTap);
+  $('sdHint').addEventListener('click', () => {
+    if (!sd || sd.done) return;
+    const d = sd.diffs.find(d => !d.found); if (!d) return;
+    const o = sd.objs[d.i]; sd.hintAt = { x: o.x + rnd(-18, 18), y: o.y + rnd(-18, 18) };
+    $('sdVerdict').textContent = '초록 점선 동그라미 근처를 잘 보세요!'; sdDraw();
+  });
+  $('sdNext').addEventListener('click', sdNew);
+
+  /* ---------- 놀이 6: 숫자 놀이 (덧셈·뺄셈) ---------- */
+  // 쉬움: 10까지, 그림 세기, 보기 고르기 / 보통: 20까지, 그림 세기, 보기 고르기 / 어려움: 100까지 두 자리 수, 숫자 직접 누르기
+  let mt = null, mtStreak = 0, mtBest = 0, mtSolved = store.get('mtSolved', 0);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  function mtMake() {
+    const add = Math.random() < .5;
+    let a, b;
+    if (level === 'easy') { if (add) { a = ri(1, 8); b = ri(1, 10 - a); } else { a = ri(3, 10); b = ri(1, a - 1); } }
+    else if (level === 'normal') { if (add) { a = ri(3, 12); b = ri(2, 20 - a); } else { a = ri(8, 20); b = ri(2, a - 2); } }
+    else { if (add) { a = ri(12, 75); b = ri(8, 99 - a); } else { a = ri(25, 99); b = ri(8, a - 5); } }
+    return { add, a, b, ans: add ? a + b : a - b };
+  }
+  function mtNew() {
+    const P = pool(), A = pickFrom(P); let B = pickFrom(P); while (B === A && P.length > 1) B = pickFrom(P);
+    const q = mtMake();
+    mt = { ...q, A, B, tries: 0, done: false, typed: '' };
+    const pics = level !== 'hard';
+    if (q.add) {
+      mt.story = pics
+        ? `${josa(A.ko, '이', '가')} <b>${q.a}</b>마리, ${josa(B.ko, '이', '가')} <b>${q.b}</b>마리 놀고 있어요. 모두 몇 마리일까요?`
+        : `${josa(A.ko, '이', '가')} 열매를 <b>${q.a}</b>개 모았어요. ${josa(B.ko, '이', '가')} <b>${q.b}</b>개를 더 가져왔어요. 열매는 모두 몇 개일까요?`;
+    } else {
+      mt.story = pics
+        ? `${A.ko} <b>${q.a}</b>마리가 놀고 있었어요. 그중 <b>${q.b}</b>마리가 집에 갔어요. 몇 마리 남았을까요?`
+        : `${josa(A.ko, '이', '가')} 열매를 <b>${q.a}</b>개 가지고 있었어요. 그중 <b>${q.b}</b>개를 먹었어요. 몇 개 남았을까요?`;
+    }
+    $('mtStory').innerHTML = mt.story;
+    // 그림으로 세기: 5개씩 줄을 맞춰 놓아요
+    const grp = (id, n, byeFrom = Infinity) => {
+      let rows = '', html = '';
+      for (let i = 0; i < n; i++) {
+        html += `<img src="${ART(id)}" alt="" class="${i >= byeFrom ? 'bye' : ''}" onerror="this.onerror=null;this.src='${SPRITE(id)}'">`;
+        if ((i + 1) % 5 === 0 || i === n - 1) { rows += `<div class="row5">${html}</div>`; html = ''; }
+      }
+      return `<div class="grp">${rows}</div>`;
+    };
+    $('mtPics').innerHTML = !pics ? '' : q.add
+      ? grp(A.id, q.a) + '<span class="op">+</span>' + grp(B.id, q.b)
+      : grp(A.id, q.a, q.a - q.b);
+    $('mtPics').hidden = !pics;
+    mtEq(false);
+    // 쉬움·보통은 보기에서 고르고, 어려움은 숫자를 직접 눌러요
+    $('mtChoices').hidden = !pics; $('mtPad').hidden = pics;
+    if (pics) {
+      const opts = new Set([q.ans]);
+      const near = [1, -1, 2, -2, 3, -3, 10, -10];
+      while (opts.size < 4) { const v = q.ans + near[Math.floor(Math.random() * near.length)]; if (v >= 0) opts.add(v); }
+      $('mtChoices').innerHTML = [...opts].sort((x, y) => x - y).map(v => `<button type="button" data-v="${v}">${v}</button>`).join('');
+    } else { $('mtTyped').innerHTML = '&nbsp;'; }
+    $('mtVerdict').textContent = pics ? '그림을 세어 보고 골라 보세요!' : '숫자를 눌러서 답을 써 보세요!';
+    $('mtNext').hidden = true;
+  }
+  function mtEq(show) {
+    $('mtEq').innerHTML = `${mt.a} ${mt.add ? '+' : '−'} ${mt.b} = <span class="q${show ? ' ok' : ''}">${show ? mt.ans : '?'}</span>`;
+  }
+  function mtCheck(v) {
+    if (!mt || mt.done) return false;
+    if (v === mt.ans) {
+      mt.done = true; mtEq(true);
+      if (mt.tries === 0) { mtStreak++; if (mtStreak > mtBest) { mtBest = mtStreak; store.set('mtBest-' + level, mtBest); } }
+      mtSolved++; store.set('mtSolved', mtSolved);
+      $('mtVerdict').textContent = mt.tries === 0 ? `정답이에요! ${mt.a} ${mt.add ? '더하기' : '빼기'} ${josa(String(mt.b), '은', '는')} ${mt.ans}!` : `맞았어요! 답은 ${josa(String(mt.ans), '이에요', '예요')}.`;
+      speak(`정답! ${mt.a} ${mt.add ? '더하기' : '빼기'} ${josa(String(mt.b), '은', '는')} ${mt.ans}`);
+      $('mtNext').hidden = false; $('mtNext').focus({ preventScroll: true });
+    } else {
+      mt.tries++; mtStreak = 0;
+      if (level === 'hard' && mt.tries >= 3) {          // 세 번 틀리면 답을 보여줘요
+        mt.done = true; mtEq(true); $('mtVerdict').textContent = `괜찮아요! 답은 ${josa(String(mt.ans), '이에요', '예요')}. 다음 문제도 해 볼까요?`;
+        $('mtNext').hidden = false;
+      } else $('mtVerdict').textContent = level === 'hard' ? '아쉬워요! 다시 계산해 볼까요?' : '아쉬워요! 그림을 다시 세어 볼까요?';
+    }
+    $('mtStreak').textContent = mtStreak; $('mtBest').textContent = mtBest; $('mtSolved').textContent = mtSolved;
+    return v === mt.ans;
+  }
+  $('mtChoices').addEventListener('click', e => {
+    const b = e.target.closest('[data-v]'); if (!b || b.disabled || !mt || mt.done) return;
+    if (mtCheck(+b.dataset.v)) { b.classList.add('right'); $('mtChoices').querySelectorAll('button').forEach(x => x.disabled = true); }
+    else { b.classList.add('tried'); b.disabled = true; }
+  });
+  function mtKey(k) {
+    if (!mt || mt.done) return;
+    if (k === 'del') mt.typed = mt.typed.slice(0, -1);
+    else if (k === 'ok') { if (mt.typed) { const ok = mtCheck(+mt.typed); if (!ok) mt.typed = ''; } }
+    else if (mt.typed.length < 3) mt.typed = (mt.typed + k).replace(/^0+(?=\d)/, '');
+    $('mtTyped').innerHTML = mt.typed || '&nbsp;';
+  }
+  $('mtPad').addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (b) mtKey(b.dataset.k); });
+  document.addEventListener('keydown', e => {
+    if (view !== 'quiz' || quizMode !== 'math' || openId || level !== 'hard') return;
+    if (/^\d$/.test(e.key)) mtKey(e.key);
+    else if (e.key === 'Backspace') mtKey('del');
+    else if (e.key === 'Enter') { e.preventDefault(); mt && mt.done ? mtNew() : mtKey('ok'); }
+  });
+  $('mtSay').addEventListener('click', () => { if (mt) speak($('mtStory').textContent); });
+  $('mtNext').addEventListener('click', mtNew);
+
   /* ---------- 난이도 바꾸기 ---------- */
   function renderLevel() {
     $('quizLevel').querySelectorAll('[data-lv]').forEach(b => b.setAttribute('aria-checked', b.dataset.lv === level));
@@ -993,12 +1376,13 @@ footer summary { cursor: pointer; font-weight: 700; }
     streak = 0; choStreak = 0;
     $('streak').textContent = 0; $('bestStreak').textContent = best;
     $('choStreak').textContent = 0; $('choBest').textContent = choBest;
+    mtBest = store.get('mtBest-' + level, 0); mtStreak = 0; $('mtStreak').textContent = 0; $('mtBest').textContent = mtBest;
   }
   $('quizLevel').addEventListener('click', e => {
     const b = e.target.closest('[data-lv]'); if (!b || b.dataset.lv === level) return;
     level = b.dataset.lv; store.set('level', level);
     renderLevel();
-    current = null; choCur = null; pzCur = null;   // 새 난이도로 문제를 다시 내요
+    current = null; choCur = null; pzCur = null; mz = null; sd = null; mt = null;   // 새 난이도로 문제를 다시 내요
     setQuiz(quizMode);
   });
 
@@ -1011,8 +1395,11 @@ footer summary { cursor: pointer; font-weight: 700; }
   function setQuiz(m) {
     quizMode = m;
     $('quizTabs').querySelectorAll('[data-q]').forEach(x => x.setAttribute('aria-selected', x.dataset.q === m));
-    ['shadow', 'chosung', 'puzzle'].forEach(k => $('q-' + k).hidden = k !== m);
+    ['shadow', 'chosung', 'puzzle', 'maze', 'diff', 'math'].forEach(k => $('q-' + k).hidden = k !== m);
+    if (m === 'math' && DEX.length && !mt) mtNew();
     if (!DEX.length) return;
+    if (m === 'maze') { if (!mz) mzNew(); else mzDraw(); }
+    if (m === 'diff') { if (!sd) sdNew(); else sdDraw(); }
     if (m === 'shadow' && !current) newQuestion();
     if (m === 'chosung' && !choCur) choNew();
     if (m === 'puzzle' && !pzCur) pzNew(false);
@@ -1036,7 +1423,7 @@ footer summary { cursor: pointer; font-weight: 700; }
   /* ---------- 시작 ---------- */
   (async function init() {
     renderChips(); updateFriendCount();
-    renderLevel(); $('pzDone').textContent = pzDone;
+    renderLevel(); $('pzDone').textContent = pzDone; $('mzDone').textContent = mzDone; $('sdDone').textContent = sdDone; $('mtSolved').textContent = mtSolved;
     try {
       DEX = await loadNames();
       byId = new Map(DEX.map(p => [p.id, p]));
