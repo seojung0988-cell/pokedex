@@ -213,11 +213,55 @@ header { padding-block: 16px 8px; display: flex; align-items: center; justify-co
 .levels button[aria-checked="true"] { background: var(--ink); color: var(--paper); }
 .levels button[aria-checked="true"] span { color: var(--sky-deep); }
 .answers button:last-child:nth-child(odd) { grid-column: 1 / -1; }
-.qtabs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; max-width: 980px; margin: 18px auto 0; }
-.qtabs button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 6px; border: 3px solid var(--ink); border-radius: 20px; background: var(--paper); box-shadow: 0 4px 0 var(--ink); }
-.qtabs button b { font-family: var(--display); font-weight: 400; font-size: 1.25rem; line-height: 1.2; }
-.qtabs button span { font-size: .85rem; color: var(--ink-soft); }
-.qtabs button[aria-selected="true"] { background: var(--sun); }
+.qgroups { display: grid; grid-template-columns: 1.4fr 1.4fr 1fr .7fr; gap: 12px; max-width: 1040px; margin: 18px auto 0; }
+.qg { background: rgba(255,255,255,.55); border: 2px dashed var(--sky-deep); border-radius: 22px; padding: 8px 10px 12px; min-width: 0; }
+.qg-title { font-family: var(--display); font-size: 1rem; color: var(--ink-soft); text-align: center; margin-bottom: 6px; }
+.qg-btns { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; }
+.qgroups button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border: 3px solid var(--ink); border-radius: 18px; background: var(--paper); box-shadow: 0 4px 0 var(--ink); min-width: 0; }
+.qgroups button b { font-family: var(--display); font-weight: 400; font-size: 1.12rem; line-height: 1.2; word-break: keep-all; }
+.qgroups button span { font-size: .78rem; color: var(--ink-soft); word-break: keep-all; }
+.qgroups button[aria-selected="true"] { background: var(--sun); }
+.hint-line { font-family: var(--display); font-size: 1.3rem; margin: 6px auto 0; padding: 8px 14px; background: var(--sky); border-radius: 14px; max-width: 30em; }
+.shadow.peek img { filter: brightness(.55) saturate(.7); }
+.memo { --cols: 4; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 10px; max-width: 640px; margin: 0 auto; }
+.mcard { aspect-ratio: 3 / 4; border: 0; padding: 0; background: none; perspective: 700px; }
+.mcard .inner { position: relative; display: block; width: 100%; height: 100%; transition: transform .35s; transform-style: preserve-3d; }
+.mcard.open .inner { transform: rotateY(180deg); }
+.mcard .face { position: absolute; inset: 0; display: grid; place-items: center; border: 3px solid var(--ink); border-radius: 16px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.mcard .back { background: var(--coral); background-image: radial-gradient(rgba(255,255,255,.35) 3px, transparent 3.5px); background-size: 16px 16px; color: #fff; font-family: var(--display); font-size: 2.2rem; box-shadow: 0 4px 0 var(--ink); }
+.mcard .front { background: var(--paper); transform: rotateY(180deg); }
+.mcard .front img { width: 86%; height: 86%; object-fit: contain; }
+.mcard.done .front { background: #e6f6ec; border-color: var(--leaf); }
+.evo-slots { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; margin: 6px 0 14px; }
+.evo-slots .arrow { font-family: var(--display); font-size: 1.8rem; color: var(--ink-soft); }
+.slot { width: 118px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 3px dashed var(--ink-soft); border-radius: 18px; background: var(--sky); padding: 6px; }
+.slot .num { font-family: var(--display); font-size: 1.6rem; color: var(--ink-soft); }
+.slot.full { border-style: solid; border-color: var(--ink); background: var(--paper); }
+.slot.right { background: #e6f6ec; border-color: var(--leaf); }
+.slot.wrong { background: #ffe5e0; border-color: var(--coral); }
+.slot img, .pick img { width: 84px; height: 84px; object-fit: contain; }
+.slot span, .pick span { font-family: var(--display); font-size: 1rem; word-break: keep-all; }
+.evo-pick { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.pick { width: 118px; display: flex; flex-direction: column; align-items: center; padding: 6px; border: 3px solid var(--ink); border-radius: 18px; background: var(--paper); box-shadow: 0 4px 0 var(--ink); }
+.pick[disabled] { visibility: hidden; }
+.sz-cards { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.sz-card { position: relative; width: 140px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px; border: 3px solid var(--ink); border-radius: 20px; background: var(--paper); box-shadow: 0 4px 0 var(--ink); }
+.sz-card img { width: 100px; height: 100px; object-fit: contain; }
+.sz-card b { font-family: var(--display); font-weight: 400; font-size: 1.15rem; word-break: keep-all; }
+.sz-card .val { font-size: .95rem; color: var(--ink-soft); min-height: 1.4em; }
+.sz-card .ord { position: absolute; top: -12px; left: -10px; width: 40px; height: 40px; border-radius: 50%; background: var(--sun); border: 3px solid var(--ink); font-family: var(--display); font-size: 1.3rem; display: grid; place-items: center; }
+.sz-card.right { background: #e6f6ec; border-color: var(--leaf); }
+.sz-card.wrong { background: #ffe5e0; border-color: var(--coral); }
+.sz-stage { margin: 16px auto 0; max-width: 760px; }
+.sz-stage .line { display: flex; align-items: flex-end; justify-content: center; gap: 18px; min-height: 190px; border-bottom: 3px solid var(--ink); padding-top: 10px; }
+.sz-stage figure { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
+.sz-stage figure img { object-fit: contain; object-position: bottom; }
+.sz-stage figcaption { font-family: var(--display); font-size: 1rem; }
+.sz-stage .wrow { display: grid; grid-template-columns: 7em minmax(0, 1fr) 5em; gap: 10px; align-items: center; margin: 8px 0; text-align: left; }
+.sz-stage .wrow b { font-family: var(--display); font-weight: 400; word-break: keep-all; }
+.sz-stage .wbar { height: 26px; border-radius: 999px; background: var(--sky); border: 2px solid var(--ink); overflow: hidden; }
+.sz-stage .wbar i { display: block; height: 100%; background: var(--coral); border-radius: 999px; }
+.sz-stage .wrow span { font-family: var(--display); text-align: right; font-variant-numeric: tabular-nums; }
 .cho { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 16px 0 12px; }
 .cho span { min-width: 56px; height: 64px; padding: 0 6px; display: grid; place-items: center; font-family: var(--display); font-size: 2.2rem; border: 3px solid var(--ink); border-radius: 14px; background: var(--sky); }
 .cho span.open { background: var(--sun); }
@@ -242,12 +286,8 @@ footer summary { cursor: pointer; font-weight: 700; }
 #apiLog { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .8rem; background: var(--paper); border: 2px solid var(--sky-deep); border-radius: 12px; padding: 10px; max-height: 220px; overflow: auto; white-space: pre-wrap; word-break: break-all; margin-top: 8px; }
 
 @media (max-width: 600px) {
-  .qtabs button b { font-size: 1.05rem; }
   .lv-label { display: none; }
   .levels button { min-width: 0; flex: 1; padding: 6px 4px; }
-  .qtabs button span { display: none; }
-  .qtabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .qtabs button b { font-size: .95rem; white-space: nowrap; }
   .diff-pair { grid-template-columns: 1fr; }
   .counters img { width: 30px; height: 30px; }
   .counters .op { font-size: 1.8rem; }
@@ -264,9 +304,22 @@ footer summary { cursor: pointer; font-weight: 700; }
   .who { text-align: center; }
   .who .types { justify-content: center; }
   .answers button { font-size: 1.15rem; }
+  .qgroups { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .qgroups button span { display: none; }
+  .qgroups button b { font-size: .98rem; }
+  .qg { padding: 6px 6px 8px; }
+  .qg-btns { grid-template-columns: 1fr; gap: 6px; }
+  .memo { gap: 6px; }
+  .mcard .back { font-size: 1.6rem; }
+  .slot, .pick { width: 96px; }
+  .slot img, .pick img { width: 64px; height: 64px; }
+  .slot { min-height: 116px; }
+  .sz-card { width: 104px; }
+  .sz-card img { width: 72px; height: 72px; }
+  .sz-stage .wrow { grid-template-columns: 5em minmax(0, 1fr) 4.2em; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .card, .tab, .big-btn, .bar i, .shadow img { transition: none; }
+  .card, .tab, .big-btn, .bar i, .shadow img, .mcard .inner { transition: none; }
   .card:hover { transform: none; }
   .spin { animation-duration: 2s; }
 }
@@ -318,13 +371,24 @@ footer summary { cursor: pointer; font-weight: 700; }
       <button type="button" role="radio" data-lv="normal" aria-checked="false"><b>보통</b><span>1~4세대 친구들</span></button>
       <button type="button" role="radio" data-lv="hard" aria-checked="false"><b>어려움</b><span>모든 세대 친구들</span></button>
     </div>
-    <div class="qtabs" id="quizTabs" role="tablist" aria-label="놀이 고르기">
-      <button type="button" role="tab" data-q="shadow" aria-selected="true"><b>그림자 퀴즈</b><span>까만 그림자는 누구?</span></button>
-      <button type="button" role="tab" data-q="chosung" aria-selected="false"><b>초성 퀴즈</b><span>ㅍㅋㅊ 는 누구?</span></button>
-      <button type="button" role="tab" data-q="puzzle" aria-selected="false"><b>퍼즐 맞추기</b><span>조각을 바꿔 맞춰요</span></button>
-      <button type="button" role="tab" data-q="maze" aria-selected="false"><b>미로 찾기</b><span>친구를 만나러 가요</span></button>
-      <button type="button" role="tab" data-q="diff" aria-selected="false"><b>틀린 그림 찾기</b><span>다른 곳을 찾아요</span></button>
-      <button type="button" role="tab" data-q="math" aria-selected="false"><b>숫자 놀이</b><span>더하고 빼요</span></button>
+    <div class="qgroups" id="quizTabs" role="tablist" aria-label="놀이 고르기">
+      <div class="qg"><div class="qg-title">눈으로 찾기</div><div class="qg-btns">
+        <button type="button" role="tab" data-q="shadow" aria-selected="true"><b>그림자 퀴즈</b><span>까만 그림자는 누구?</span></button>
+        <button type="button" role="tab" data-q="diff" aria-selected="false"><b>틀린 그림 찾기</b><span>다른 곳을 찾아요</span></button>
+        <button type="button" role="tab" data-q="puzzle" aria-selected="false"><b>퍼즐 맞추기</b><span>조각을 바꿔 맞춰요</span></button>
+      </div></div>
+      <div class="qg"><div class="qg-title">기억하고 순서 짓기</div><div class="qg-btns">
+        <button type="button" role="tab" data-q="memo" aria-selected="false"><b>카드 짝 맞추기</b><span>같은 친구를 찾아요</span></button>
+        <button type="button" role="tab" data-q="evo" aria-selected="false"><b>진화 순서</b><span>누가 먼저일까?</span></button>
+        <button type="button" role="tab" data-q="maze" aria-selected="false"><b>미로 찾기</b><span>친구를 만나러 가요</span></button>
+      </div></div>
+      <div class="qg"><div class="qg-title">수학</div><div class="qg-btns">
+        <button type="button" role="tab" data-q="math" aria-selected="false"><b>숫자 놀이</b><span>더하고 빼요</span></button>
+        <button type="button" role="tab" data-q="size" aria-selected="false"><b>누가 더 클까?</b><span>키와 몸무게 비교</span></button>
+      </div></div>
+      <div class="qg"><div class="qg-title">한글</div><div class="qg-btns">
+        <button type="button" role="tab" data-q="chosung" aria-selected="false"><b>초성 퀴즈</b><span>ㅍㅋㅊ 는 누구?</span></button>
+      </div></div>
     </div>
 
     <!-- 그림자 퀴즈 -->
@@ -334,7 +398,8 @@ footer summary { cursor: pointer; font-weight: 700; }
       <div class="shadow" id="shadow"><img id="shadowImg" alt="그림자 모양의 포켓몬"></div>
       <div class="verdict" id="verdict" aria-live="polite"></div>
       <div class="answers" id="answers"></div>
-      <div style="margin-top:16px"><button class="big-btn" id="nextQ" type="button" hidden>다음 문제 →</button></div>
+      <p class="hint-line" id="shHintText" aria-live="polite" hidden></p>
+      <div class="qbtns" style="margin-top:16px"><button class="big-btn plain" id="shHint" type="button">힌트 볼래요</button><button class="big-btn" id="nextQ" type="button" hidden>다음 문제 →</button></div>
     </div>
 
     <!-- 초성 퀴즈 -->
@@ -415,6 +480,38 @@ footer summary { cursor: pointer; font-weight: 700; }
       <div class="verdict" id="mtVerdict" aria-live="polite"></div>
       <div class="qbtns"><button class="big-btn plain" id="mtSay" type="button">🔊 문제 읽어 주세요</button><button class="big-btn" id="mtNext" type="button" hidden>다음 문제 →</button></div>
     </div>
+
+    <!-- 카드 짝 맞추기 -->
+    <div class="quiz wide" id="q-memo" hidden>
+      <h2>같은 친구 짝 맞추기</h2>
+      <div class="score"><span>뒤집은 횟수 <b id="meTries">0</b></span><span>찾은 짝 <b id="mePairs">0</b> / <b id="meTotal">0</b></span><span>다 맞춘 판 <b id="meDone">0</b></span></div>
+      <p class="pz-help">카드를 두 장씩 뒤집어서 같은 포켓몬을 찾아요.</p>
+      <div class="memo" id="meGrid"></div>
+      <div class="verdict" id="meVerdict" aria-live="polite"></div>
+      <div class="qbtns"><button class="big-btn" id="meNew" type="button">새 판 시작 →</button></div>
+    </div>
+
+    <!-- 진화 순서 -->
+    <div class="quiz" id="q-evo" hidden>
+      <h2>진화 순서를 맞춰요</h2>
+      <div class="score"><span>연속 정답 <b id="evStreak">0</b></span><span>최고 기록 <b id="evBest">0</b></span></div>
+      <p class="pz-help" id="evHelp">어릴 때 모습부터 차례대로 눌러 보세요.</p>
+      <div class="evo-slots" id="evSlots"></div>
+      <div class="evo-pick" id="evPick"></div>
+      <div class="verdict" id="evVerdict" aria-live="polite"></div>
+      <div class="qbtns"><button class="big-btn plain" id="evClear" type="button">다시 고르기</button><button class="big-btn" id="evNext" type="button" hidden>다음 문제 →</button></div>
+    </div>
+
+    <!-- 누가 더 클까 -->
+    <div class="quiz wide" id="q-size" hidden>
+      <h2 id="szTitle">누가 더 클까요?</h2>
+      <div class="score"><span>연속 정답 <b id="szStreak">0</b></span><span>최고 기록 <b id="szBest">0</b></span></div>
+      <p class="pz-help" id="szHelp"></p>
+      <div class="sz-cards" id="szCards"></div>
+      <div class="sz-stage" id="szStage" hidden></div>
+      <div class="verdict" id="szVerdict" aria-live="polite"></div>
+      <div class="qbtns"><button class="big-btn plain" id="szUndo" type="button" hidden>다시 고르기</button><button class="big-btn" id="szNext" type="button" hidden>다음 문제 →</button></div>
+    </div>
   </main>
 
   <!-- ===== 내 친구들 ===== -->
@@ -448,6 +545,7 @@ footer summary { cursor: pointer; font-weight: 700; }
   const NAMES_CSV = CSV_BASE + 'pokemon_species_names.csv';   // 한글 이름표
   const STATS_CSV = CSV_BASE + 'pokemon_stats.csv';           // 모든 포켓몬 능력치
   const TYPES_CSV = CSV_BASE + 'pokemon_types.csv';           // 모든 포켓몬 타입
+  const BODY_CSV = CSV_BASE + 'pokemon.csv';                  // 모든 포켓몬 키와 몸무게
   const ART = id => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
   const SPRITE = id => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
   const CACHE_V = 'kdex1:';
@@ -620,6 +718,16 @@ footer summary { cursor: pointer; font-weight: 700; }
     }
     for (const p of DEX) { const v = power[p.id]; if (v) { p.bst = v[0]; p.types = (v[1] || []).filter(Boolean); } }
     hasPower = DEX.some(p => p.bst);
+    // 키(10cm 단위)와 몸무게(100g 단위): 누가 더 클까? 놀이에 써요
+    try {
+      let body = store.get('body', null);
+      if (!body) {
+        body = {};
+        for (const r of (await fetchCSV(BODY_CSV)).slice(1)) { const id = +r[0]; if (byId.has(id) && +r[2] === id) body[id] = [+r[3], +r[4]]; }
+        store.set('body', body);
+      }
+      for (const p of DEX) { const v = body[p.id]; if (v) { p.h = v[0]; p.w = v[1]; } }
+    } catch (e) {}
   }
 
   // 타입별 목록: 힘 정보가 있으면 바로 고르고, 없으면 PokeAPI에 물어봐요
@@ -939,7 +1047,7 @@ footer summary { cursor: pointer; font-weight: 700; }
   const pickFrom = P => P[Math.floor(Math.random() * P.length)];
 
   /* ---------- 퀴즈 1: 그림자 퀴즈 (그림만 쓰고 API 요청은 안 해요) ---------- */
-  let streak = 0, best = 0, current = null;
+  let streak = 0, best = 0, current = null, hintStep = 0;
   function newQuestion() {
     const P = pool(); if (P.length < 4) return;
     const pick = () => pickFrom(P);
@@ -959,6 +1067,8 @@ footer summary { cursor: pointer; font-weight: 700; }
     $('shadowImg').onerror = () => { $('shadowImg').onerror = null; $('shadowImg').src = SPRITE(ans.id); };
     $('verdict').textContent = '';
     $('nextQ').hidden = true;
+    hintStep = 0; $('shadow').classList.remove('peek');
+    $('shHintText').hidden = true; $('shHint').hidden = false; $('shHint').textContent = '힌트 볼래요';
     $('answers').innerHTML = opts.map(o => `<button type="button" data-a="${o.id}">${esc(o.ko)}</button>`).join('');
     const pre = new Image(); pre.src = ART(pick().id);   // 다음 그림 미리 불러오기
   }
@@ -975,8 +1085,30 @@ footer summary { cursor: pointer; font-weight: 700; }
     else { streak = 0; $('verdict').textContent = `아쉬워요! 정답은 ${ieyo(current.ko)}.`; speak(`정답은 ${current.ko}`); }
     $('streak').textContent = streak; $('bestStreak').textContent = best;
     $('nextQ').hidden = false; $('nextQ').focus({ preventScroll: true });
+    $('shHint').hidden = true; $('shadow').classList.remove('peek');
   });
   $('nextQ').addEventListener('click', newQuestion);
+  // 힌트는 세 단계: 타입 → 그림자가 살짝 밝아짐 → 첫 글자 + 틀린 보기 하나 지우기
+  $('shHint').addEventListener('click', () => {
+    if (!current || !$('nextQ').hidden) return;
+    hintStep++;
+    let msg = '';
+    if (hintStep === 1) {
+      const t = (current.types || [])[0];
+      if (t && TYPES[t]) msg = `힌트 1: ${TYPES[t][0]} 타입 친구예요.`;
+      else hintStep = 2;
+    }
+    if (hintStep === 2) { $('shadow').classList.add('peek'); msg = '힌트 2: 그림자를 살짝 밝혀 줄게요. 무슨 색이 보여요?'; }
+    if (hintStep >= 3) {
+      const first = [...current.ko][0];
+      const wrong = [...$('answers').querySelectorAll('button:not(:disabled)')].filter(b => +b.dataset.a !== current.id);
+      if (wrong.length > 1) { const w = wrong[Math.floor(Math.random() * wrong.length)]; w.disabled = true; w.style.opacity = '.3'; }
+      msg = `힌트 3: 이름이 '${first}'${ro(first).slice(first.length)} 시작해요. 틀린 보기 하나도 지웠어요.`;
+      $('shHint').hidden = true;
+    } else $('shHint').textContent = '힌트 하나 더';
+    $('shHintText').textContent = msg; $('shHintText').hidden = false;
+    speak(msg.replace(/^힌트 \d: /, ''));
+  });
 
 
   /* ---------- 퀴즈 2: 초성 퀴즈 ---------- */
@@ -1369,6 +1501,193 @@ footer summary { cursor: pointer; font-weight: 700; }
   $('mtSay').addEventListener('click', () => { if (mt) speak($('mtStory').textContent); });
   $('mtNext').addEventListener('click', mtNew);
 
+  // 받침에 따라 '로/으로' (ㄹ 받침은 '로')
+  const ro = w => { const c = w.charCodeAt(w.length - 1) - 0xAC00; const j = c >= 0 && c < 11172 ? c % 28 : 0; return w + (j && j !== 8 ? '으로' : '로'); };
+  const imgHTML = id => `<img src="${ART(id)}" alt="" onerror="this.onerror=null;this.src='${SPRITE(id)}'">`;
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  /* ---------- 놀이 7: 카드 짝 맞추기 (기억력) ---------- */
+  const ME_PAIRS = { easy: 6, normal: 8, hard: 12 };
+  let me = null, meDone = store.get('meDone', 0);
+  function meNew() {
+    const P = shuffle(pool().slice()).slice(0, ME_PAIRS[level]);
+    const cards = shuffle([...P, ...P].map(p => ({ p, open: false, done: false })));
+    me = { cards, first: null, lock: false, tries: 0, pairs: 0, total: P.length };
+    const cols = level === 'hard' ? (window.innerWidth <= 600 ? 4 : 6) : 4;
+    $('meGrid').style.setProperty('--cols', cols);
+    $('meGrid').innerHTML = cards.map((c, i) => `<button type="button" class="mcard" data-i="${i}" aria-label="${i + 1}번 카드"><span class="inner"><span class="face back">?</span><span class="face front">${imgHTML(c.p.id)}</span></span></button>`).join('');
+    $('meTries').textContent = 0; $('mePairs').textContent = 0; $('meTotal').textContent = P.length; $('meDone').textContent = meDone;
+    $('meVerdict').textContent = '카드를 한 장 뒤집어 보세요!';
+  }
+  $('meGrid').addEventListener('click', e => {
+    const b = e.target.closest('.mcard'); if (!b || !me || me.lock) return;
+    const i = +b.dataset.i, c = me.cards[i];
+    if (c.open || c.done) return;
+    c.open = true; b.classList.add('open');
+    if (me.first === null) { me.first = i; $('meVerdict').textContent = `${c.p.ko}! 짝꿍은 어디 있을까요?`; return; }
+    const j = me.first, d = me.cards[j]; me.first = null; me.tries++;
+    $('meTries').textContent = me.tries;
+    if (d.p === c.p) {
+      c.done = d.done = true; me.pairs++;
+      [i, j].forEach(k => $('meGrid').children[k].classList.add('done'));
+      $('mePairs').textContent = me.pairs;
+      if (me.pairs === me.total) {
+        meDone++; store.set('meDone', meDone); $('meDone').textContent = meDone;
+        $('meVerdict').textContent = `다 찾았어요! ${me.tries}번 만에 ${me.total}쌍을 모두 맞췄어요!`; speak('다 찾았어요! 기억력 최고!');
+      } else { $('meVerdict').textContent = `짝을 찾았어요! ${c.p.ko}!`; speak(c.p.ko); }
+    } else {
+      me.lock = true; $('meVerdict').textContent = '앗, 다른 친구예요. 어디 있었는지 기억해 두세요!';
+      setTimeout(() => {
+        c.open = d.open = false;
+        [i, j].forEach(k => $('meGrid').children[k].classList.remove('open'));
+        me.lock = false;
+      }, 900);
+    }
+  });
+  $('meNew').addEventListener('click', meNew);
+
+  /* ---------- 놀이 8: 진화 순서 (순서 짓기, PokeAPI에서 진화 정보를 받아 와요) ---------- */
+  let ev = null, evStreak = 0, evBest = 0, evBusy = false;
+  const noEvo = new Set(store.get('noEvo', []));
+  async function evNew() {
+    if (evBusy) return; evBusy = true;
+    $('evSlots').innerHTML = ''; $('evPick').innerHTML = '<div class="loading"><span class="spin"></span>진화 가족을 찾는 중…</div>';
+    $('evVerdict').textContent = ''; $('evNext').hidden = true; $('evClear').hidden = false;
+    const want = level === 'easy' ? 2 : 3, P = pool().filter(p => !noEvo.has(p.id));
+    let path = null;
+    try {
+      for (let t = 0; t < 14 && !path; t++) {
+        const start = pickFrom(P);
+        const d = await loadDetail(start.id);          // ★ API: 진화 단계를 받아 와요
+        const stages = (d.evo || []).map(st => st.filter(id => byId.has(id) && id <= L().max)).filter(st => st.length);
+        if (stages.length < 2) { noEvo.add(start.id); continue; }
+        const one = stages.map(st => st[Math.floor(Math.random() * st.length)]);
+        if (one.length >= want) { const k = Math.floor(Math.random() * (one.length - want + 1)); path = one.slice(k, k + want); }
+        else if (t >= 8) path = one;                     // 3단계 가족을 못 찾으면 2단계로
+      }
+      store.set('noEvo', [...noEvo].slice(-400));
+    } catch (e) { path = null; }
+    evBusy = false;
+    if (!path) { $('evPick').innerHTML = '<div class="empty"><b>앗! 진화 정보를 못 가져왔어요</b>인터넷이 잠깐 쉬고 있나 봐요. 다음 문제를 눌러 주세요.</div>'; $('evNext').hidden = false; $('evClear').hidden = true; return; }
+    let decoy = null;
+    if (level === 'hard') { do { decoy = pickFrom(pool()).id; } while (path.includes(decoy)); }
+    ev = { path, decoy, picks: [], tries: 0, done: false, cards: shuffle([...path, ...(decoy ? [decoy] : [])]) };
+    $('evHelp').textContent = decoy ? '어릴 때 모습부터 차례대로 눌러요. 다른 가족 한 마리가 섞여 있어요!' : '어릴 때 모습부터 차례대로 눌러 보세요.';
+    evRender();
+  }
+  function evRender(mark) {
+    const n = ev.path.length;
+    $('evSlots').innerHTML = Array.from({ length: n }, (_, i) => {
+      const id = ev.picks[i], cls = id ? 'slot full' + (mark ? (id === ev.path[i] ? ' right' : ' wrong') : '') : 'slot';
+      return (i ? '<span class="arrow" aria-hidden="true">→</span>' : '') +
+        `<button type="button" class="${cls}" data-s="${i}" aria-label="${i + 1}번째 자리">${id ? imgHTML(id) + `<span>${esc(byId.get(id).ko)}</span>` : `<span class="num">${i + 1}</span>`}</button>`;
+    }).join('');
+    $('evPick').innerHTML = ev.cards.map(id => `<button type="button" class="pick" data-id="${id}" ${ev.picks.includes(id) || ev.done ? 'disabled' : ''}>${imgHTML(id)}<span>${esc(byId.get(id).ko)}</span></button>`).join('');
+  }
+  $('evPick').addEventListener('click', e => {
+    const b = e.target.closest('.pick'); if (!b || !ev || ev.done) return;
+    if (ev.picks.length >= ev.path.length) return;
+    ev.picks.push(+b.dataset.id); evRender();
+    if (ev.picks.length === ev.path.length) evCheck();
+  });
+  $('evSlots').addEventListener('click', e => {
+    const b = e.target.closest('[data-s]'); if (!b || !ev || ev.done) return;
+    const i = +b.dataset.s; if (ev.picks[i] === undefined) return;
+    ev.picks.splice(i, 1); $('evVerdict').textContent = ''; evRender();
+  });
+  function evCheck() {
+    const ok = ev.picks.every((id, i) => id === ev.path[i]);
+    const names = ev.path.map(id => byId.get(id).ko);
+    const story = names.slice(0, -1).map((nm, i) => `${josa(nm, '이', '가')} ${ro(names[i + 1])}`).join(', ') + ' 진화해요';
+    if (ok) {
+      ev.done = true;
+      if (ev.tries === 0) { evStreak++; if (evStreak > evBest) { evBest = evStreak; store.set('evBest-' + level, evBest); } }
+      $('evVerdict').textContent = `정답! ${story}!` + (ev.decoy ? ` ${josa(byId.get(ev.decoy).ko, '은', '는')} 다른 가족이에요.` : '');
+      speak(story); $('evNext').hidden = false; $('evClear').hidden = true; evRender(true);
+    } else {
+      ev.tries++; evStreak = 0; evRender(true);
+      if (ev.tries >= 2) {
+        ev.done = true; ev.picks = ev.path.slice(); evRender(true);
+        $('evVerdict').textContent = `괜찮아요! ${story}.`; speak(story); $('evNext').hidden = false; $('evClear').hidden = true;
+      } else $('evVerdict').textContent = '순서가 조금 달라요. 빨간 자리를 눌러서 빼고 다시 해 볼까요?';
+    }
+    $('evStreak').textContent = evStreak; $('evBest').textContent = evBest;
+  }
+  $('evClear').addEventListener('click', () => { if (ev && !ev.done) { ev.picks = []; $('evVerdict').textContent = ''; evRender(); } });
+  $('evNext').addEventListener('click', evNew);
+
+  /* ---------- 놀이 9: 누가 더 클까? (키·몸무게 비교) ---------- */
+  let sz = null, szStreak = 0, szBest = 0;
+  const mStr = h => `${(h / 10).toFixed(1).replace(/\.0$/, '')}m`;
+  const kgStr = w => `${(w / 10).toFixed(1).replace(/\.0$/, '')}kg`;
+  function szNew() {
+    const P = pool().filter(p => p.h && p.w);
+    if (P.length < 6) { $('szCards').innerHTML = '<div class="empty"><b>키와 몸무게 정보를 못 받았어요</b>인터넷 연결을 확인하고 새로고침해 주세요.</div>'; return; }
+    const n = { easy: 2, normal: 3, hard: 5 }[level], gap = { easy: 1.5, normal: 1.3, hard: 1.15 }[level];
+    const by = Math.random() < .5 ? 'h' : 'w';
+    let set = null;
+    for (let t = 0; t < 400 && !set; t++) {
+      const c = shuffle(P.slice()).slice(0, n).sort((a, b) => a[by] - b[by]);
+      if (c.every((p, i) => !i || p[by] >= c[i - 1][by] * gap)) set = c;
+    }
+    if (!set) set = shuffle(P.slice()).slice(0, n).sort((a, b) => a[by] - b[by]);
+    const ask = level === 'easy' ? (Math.random() < .65 ? 'big' : 'small') : 'order';
+    sz = { set, by, ask, cards: shuffle(set.slice()), picks: [], done: false };
+    const word = by === 'h' ? ['클까요', '작을까요', '작은 친구부터', '키'] : ['무거울까요', '가벼울까요', '가벼운 친구부터', '몸무게'];
+    $('szTitle').textContent = ask === 'order' ? `${word[2]} 줄을 세워요` : `누가 더 ${ask === 'big' ? word[0] : word[1]}?`;
+    $('szHelp').textContent = ask === 'order' ? `${word[2]} 차례대로 눌러 보세요. (${word[3]} 비교)` : '맞는 친구를 눌러 보세요.';
+    $('szStage').hidden = true; $('szVerdict').textContent = ''; $('szNext').hidden = true; $('szUndo').hidden = ask !== 'order';
+    szRender();
+  }
+  function szRender(reveal) {
+    $('szCards').innerHTML = sz.cards.map(p => {
+      const k = sz.picks.indexOf(p), cls = reveal ? (reveal.get(p) === true ? ' right' : reveal.get(p) === false ? ' wrong' : '') : '';
+      return `<button type="button" class="sz-card${cls}" data-id="${p.id}" ${sz.done ? 'disabled' : ''}>${k >= 0 && sz.ask === 'order' ? `<span class="ord">${k + 1}</span>` : ''}${imgHTML(p.id)}<b>${esc(p.ko)}</b><span class="val">${sz.done ? (sz.by === 'h' ? mStr(p.h) : kgStr(p.w)) : ''}</span></button>`;
+    }).join('');
+  }
+  function szStage() {
+    const list = sz.set, by = sz.by;
+    if (by === 'h') {
+      const max = Math.max(...list.map(p => p.h));
+      $('szStage').innerHTML = `<div class="line">${list.map(p => `<figure>${imgHTML(p.id).replace('<img ', `<img style="height:${Math.max(18, Math.round(p.h / max * 170))}px;width:auto;max-width:150px" `)}<figcaption>${esc(p.ko)} ${mStr(p.h)}</figcaption></figure>`).join('')}</div>`;
+    } else {
+      const max = Math.max(...list.map(p => p.w));
+      $('szStage').innerHTML = list.map(p => `<div class="wrow"><b>${esc(p.ko)}</b><span class="wbar"><i style="width:${Math.max(2, p.w / max * 100)}%"></i></span><span>${kgStr(p.w)}</span></div>`).join('');
+    }
+    $('szStage').hidden = false;
+  }
+  function szFinish(ok, msg, reveal) {
+    sz.done = true;
+    if (ok) { szStreak++; if (szStreak > szBest) { szBest = szStreak; store.set('szBest-' + level, szBest); } } else szStreak = 0;
+    $('szStreak').textContent = szStreak; $('szBest').textContent = szBest;
+    $('szVerdict').textContent = msg; speak(msg); szStage(); szRender(reveal);
+    $('szNext').hidden = false; $('szUndo').hidden = true;
+  }
+  $('szCards').addEventListener('click', e => {
+    const b = e.target.closest('.sz-card'); if (!b || !sz || sz.done) return;
+    const p = byId.get(+b.dataset.id), by = sz.by;
+    if (sz.ask !== 'order') {
+      const [lo, hi] = sz.set, right = sz.ask === 'big' ? hi : lo;
+      const ratio = hi[by] / lo[by];
+      const cmp = by === 'h' ? (sz.ask === 'big' ? '커요' : '작아요') : (sz.ask === 'big' ? '무거워요' : '가벼워요');
+      const line = sz.ask === 'big'
+        ? `${josa(hi.ko, '이', '가')} ${lo.ko}보다 ${ratio >= 2 ? Math.round(ratio) + '배쯤' : '조금 더'} ${cmp}`
+        : `${josa(lo.ko, '이', '가')} ${hi.ko}보다 ${cmp}`;
+      sz.picks = [p];
+      szFinish(p === right, (p === right ? '정답! ' : '아쉬워요! ') + line + '!', new Map([[right, true], ...(p !== right ? [[p, false]] : [])]));
+      return;
+    }
+    if (sz.picks.includes(p)) { if (sz.picks[sz.picks.length - 1] === p) sz.picks.pop(); szRender(); return; }
+    sz.picks.push(p); szRender();
+    if (sz.picks.length === sz.set.length) {
+      const ok = sz.picks.every((q, i) => q === sz.set[i]);
+      const word = by === 'h' ? '작은' : '가벼운';
+      szFinish(ok, ok ? `정답! ${word} 친구부터 잘 세웠어요!` : '아쉬워요! 아래 그림에서 진짜 순서를 확인해 봐요.', new Map(sz.picks.map((q, i) => [q, q === sz.set[i]])));
+    }
+  });
+  $('szUndo').addEventListener('click', () => { if (sz && !sz.done) { sz.picks = []; szRender(); } });
+  $('szNext').addEventListener('click', szNew);
+
   /* ---------- 난이도 바꾸기 ---------- */
   function renderLevel() {
     $('quizLevel').querySelectorAll('[data-lv]').forEach(b => b.setAttribute('aria-checked', b.dataset.lv === level));
@@ -1377,12 +1696,14 @@ footer summary { cursor: pointer; font-weight: 700; }
     $('streak').textContent = 0; $('bestStreak').textContent = best;
     $('choStreak').textContent = 0; $('choBest').textContent = choBest;
     mtBest = store.get('mtBest-' + level, 0); mtStreak = 0; $('mtStreak').textContent = 0; $('mtBest').textContent = mtBest;
+    evBest = store.get('evBest-' + level, 0); evStreak = 0; $('evStreak').textContent = 0; $('evBest').textContent = evBest;
+    szBest = store.get('szBest-' + level, 0); szStreak = 0; $('szStreak').textContent = 0; $('szBest').textContent = szBest;
   }
   $('quizLevel').addEventListener('click', e => {
     const b = e.target.closest('[data-lv]'); if (!b || b.dataset.lv === level) return;
     level = b.dataset.lv; store.set('level', level);
     renderLevel();
-    current = null; choCur = null; pzCur = null; mz = null; sd = null; mt = null;   // 새 난이도로 문제를 다시 내요
+    current = null; choCur = null; pzCur = null; mz = null; sd = null; mt = null; me = null; ev = null; sz = null;   // 새 난이도로 문제를 다시 내요
     setQuiz(quizMode);
   });
 
@@ -1395,7 +1716,10 @@ footer summary { cursor: pointer; font-weight: 700; }
   function setQuiz(m) {
     quizMode = m;
     $('quizTabs').querySelectorAll('[data-q]').forEach(x => x.setAttribute('aria-selected', x.dataset.q === m));
-    ['shadow', 'chosung', 'puzzle', 'maze', 'diff', 'math'].forEach(k => $('q-' + k).hidden = k !== m);
+    ['shadow', 'chosung', 'puzzle', 'maze', 'diff', 'math', 'memo', 'evo', 'size'].forEach(k => $('q-' + k).hidden = k !== m);
+    if (DEX.length && m === 'memo' && !me) meNew();
+    if (DEX.length && m === 'evo' && !ev) evNew();
+    if (DEX.length && m === 'size' && !sz) szNew();
     if (m === 'math' && DEX.length && !mt) mtNew();
     if (!DEX.length) return;
     if (m === 'maze') { if (!mz) mzNew(); else mzDraw(); }
@@ -1423,7 +1747,7 @@ footer summary { cursor: pointer; font-weight: 700; }
   /* ---------- 시작 ---------- */
   (async function init() {
     renderChips(); updateFriendCount();
-    renderLevel(); $('pzDone').textContent = pzDone; $('mzDone').textContent = mzDone; $('sdDone').textContent = sdDone; $('mtSolved').textContent = mtSolved;
+    renderLevel(); $('pzDone').textContent = pzDone; $('mzDone').textContent = mzDone; $('sdDone').textContent = sdDone; $('mtSolved').textContent = mtSolved; $('meDone').textContent = meDone;
     try {
       DEX = await loadNames();
       byId = new Map(DEX.map(p => [p.id, p]));
